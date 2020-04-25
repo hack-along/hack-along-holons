@@ -1,5 +1,6 @@
-# hack-along-holons
-Create holons, join them, give appreciation, share rewards!
+# Hack-along Holons - aka Team of teams
+
+### Create and join teams, delegate appreciation, share the rewards!
 --------
 
 How can we value a plurality of stigmergic contributions and encourage open innovation? How can we enhance trust in open innovation? 
@@ -35,7 +36,7 @@ The boundaries go up and silos appear, if you win, then we loose - so why should
 
 Should the games we play in this space be zero-sum? We espouse "alignment of interests" at every turn but looking at our track record of hackathons we're completely incongruent.
 
-### The appreciative soloution
+### Positive sum Hackalongs - The appreciative soloution
 Looking at the personas above, its pretty apparent that people want to get out of their silos - its just that the hackathon game needs warping. How can we make these events positive sum?
 
 Our suggestion is to make them Hackalongs, not hackthons. Lets change the incentive model and put emphasis on valuing collaboration over competition!
