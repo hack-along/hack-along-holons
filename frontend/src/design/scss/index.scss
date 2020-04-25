@@ -24,7 +24,7 @@ html {
 }
 
 .profile-card {
-  @apply max-w-sm overflow-hidden shadow-lg rounded-full bg-white mx-3;
+  @apply max-w-sm overflow-hidden shadow-lg rounded-full bg-white mx-3 p-6;
 }
 .profile-view {
   padding-top: 4rem;

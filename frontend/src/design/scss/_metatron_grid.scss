@@ -1,4 +1,4 @@
-$gridSize: 1.5vw;
+$gridSize: 1.8rem;
 $circleR: 4;
 $circleD: $circleR * 2;
 $rows: (
@@ -112,8 +112,8 @@ $columns: (
       // background: rgba(0, 0, 0, 0.5);
       border-radius: 100%;
       display: flex;
-      height: 13vw;
-      width: 13vw;
+      height: 15.6rem;
+      width: 15.6rem;
       max-width: 100%;
       max-height: 100%;
       // transition: all 0.6s ease-in;
@@ -123,34 +123,10 @@ $columns: (
       flex-direction: column;
       svg,
       p {
-        font-size: 0.7vw;
+        font-size: 0.7rem;
         opacity: 1;
         transition: all 0.6s ease-in;
         transition-delay: 0.9s;
-      }
-
-      &.c-search {
-        background: #000f21;
-        z-index: 99;
-        input {
-          font-size: 0.9vw;
-          text-align: center;
-          border: none;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-          background: transparent;
-
-          outline: none;
-          &:active,
-          &:focus {
-            border: none;
-            outline: 0;
-            box-shadow: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 1);
-          }
-        }
-        span {
-          font-size: 0.9vw;
-        }
       }
     }
     &.circle-blue {
@@ -170,10 +146,6 @@ $columns: (
           border: 2px solid #001432;
         }
       }
-    }
-
-    &.c-search-outer {
-      z-index: 9999;
     }
 
     &.c-home {

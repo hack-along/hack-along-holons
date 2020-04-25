@@ -23,14 +23,16 @@
               <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
               <small>{{ member.address }} </small>
             </div>
-            <div class="">
+            <div>
               <span
+                v-if="member.address === defaultAccount"
                 class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
               >
-                ❤️ {{ member.remainingvotes }} remaining
+                remaining ❤️ {{ member.remainingvotes }}
               </span>
 
               <button
+                v-else
                 class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
                 @click="openAddLoveModal(index)"
               >
@@ -114,7 +116,7 @@ export default {
         amount: 1,
         maxAmount: 100,
       },
-
+      defaultAccount: null,
       contract: null,
       teamName: "",
       teamMembers: [],
@@ -147,6 +149,7 @@ export default {
         } else {
           console.log(result);
           web3.defaultAccount = result[0];
+          this.defaultAccount = result[0];
         }
       });
       this.team = new web3.eth.Contract(this.TEAMABI, this.address);
