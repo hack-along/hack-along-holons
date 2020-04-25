@@ -24,7 +24,7 @@
                 v-if="member.address === defaultAccount"
                 class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
               >
-                remaining ❤️ {{ member.remainingvotes }}
+                remaining ❤️ {{ member.remaininglove }}
               </span>
 
               <button
@@ -53,7 +53,7 @@
           <span
             class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
           >
-            ❤️ {{ member.remainingvotes }} remaining
+            ❤️ {{ member.remaininglove }} remaining
           </span>
 
           <button
@@ -100,7 +100,7 @@
 </template>
 <script>
 import web3 from "../libs/web3.js";
-import abi from "../data/abi.json";
+import abi from "../data/holonabi.json";
 export default {
   name: "HolonContainer",
   data() {
@@ -118,8 +118,8 @@ export default {
       teamMembers: [],
       team: null,
       user: null,
-      TEAMABI: abi,
-      address: "0x63aef31d8b104eb9b6c189a513cc2f5efa3dee75",
+      abi: abi,
+      address: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
       circleClass: [
         "row-2 c-3",
         "row-3 c-4",
@@ -148,7 +148,7 @@ export default {
           this.defaultAccount = result[0];
         }
       });
-      this.team = new web3.eth.Contract(this.TEAMABI, this.address);
+      this.team = new web3.eth.Contract(this.abi, this.address);
       this.getTeam();
     },
     getTeam() {
@@ -160,7 +160,28 @@ export default {
         });
 
       this.team.methods
-        .getAllMembers()
+        .totallove()
+        .call()
+        .then((data) => {
+          this.totalLove = data;
+        });
+
+      this.team.methods
+        .totalrewards()
+        .call()
+        .then((data) => {
+          this.totalRewards = data;
+      });
+
+      this.team.methods
+        .castedlove()
+        .call()
+        .then((data) => {
+          this.castedlove = data;
+      });
+
+      this.team.methods
+        .listMembers()
         .call()
         .then((data) => {
           console.log(data);
@@ -172,14 +193,18 @@ export default {
         this.teamMembers.push({
           address: members[i],
           name: "",
-          remainingvotes: "",
+          love: "",
+          remaininglove: "",
+          rewards:'',
         });
-        this.getToName(i);
-        this.getRemainingVotes(i);
+        this.getName(i);
+        this.getRemainingLove(i);
+        this.getRewards(i);
+        this.getLove(i);
         this.findMe();
       }
     },
-    getToName(index) {
+    getName(index) {
       this.team.methods
         .toName(this.teamMembers[index].address)
         .call()
@@ -187,12 +212,28 @@ export default {
           this.teamMembers[index].name = data;
         });
     },
-    getRemainingVotes(index) {
+    getRemainingLove(index) {
       this.team.methods
-        .remainingvotes(this.teamMembers[index].address)
+        .remaininglove(this.teamMembers[index].address)
         .call()
         .then((data) => {
-          this.teamMembers[index].remainingvotes = data;
+          this.teamMembers[index].remaininglove = data;
+        });
+    },
+    getRewards(index){
+      this.team.methods
+        .rewards(this.teamMembers[index].address)
+        .call()
+        .then((data) => {
+          this.teamMembers[index].rewards = data;
+        });
+    },
+    getLove(index){
+      this.team.methods
+        .love(this.teamMembers[index].address)
+        .call()
+        .then((data) => {
+          this.teamMembers[index].love = data;
         });
     },
     findMe() {
@@ -202,17 +243,17 @@ export default {
     },
     sendLove(address, amount) {
       this.team.methods
-        .voteforMember(address, amount)
+        .sendLoveTo(address, amount)
         .send({ from: web3.defaultAccount })
         .then(() => {
-          this.getRemainingVotes(this.user);
+          this.getRemainingLove(this.user);
         });
       this.closeAddLoveModal();
     },
     openAddLoveModal(index) {
       this.addLoveModal.target = this.teamMembers[index].address;
       this.addLoveModal.header = this.teamMembers[index].name;
-      this.addLoveModal.maxAmount = this.teamMembers[this.user].remainingvotes;
+      this.addLoveModal.maxAmount = this.teamMembers[this.user].remaininglove;
       this.showAddLoveModal = true;
     },
     closeAddLoveModal() {
