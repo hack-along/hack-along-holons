@@ -5,31 +5,39 @@ import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 contract Holon is Ownable {
     using SafeMath for uint256;
-    
-    //Public variables
-    string public name;
-    uint256 public uid;
-    address public creator;
+
+    //Public holon variables
+    string public name; //The holon name
+    uint256 public uid; //The holon id
+    address public creator; // link back to the holon / person who created this
+    uint256 public nholons; // number of subholons created from this one
+    uint256 public totallove; // max amount of love in this holon
+    uint256 public castedlove; // amount of love that has been spread
+    uint256 public totalrewards; // total amount of $ that has been given to this holon
     
     address payable[] internal _members;
+    address payable[] internal _holons;
     
-    //mapping (address => uint256) toID;
     mapping (address => bool) public isMember;
     mapping (string => address) public toAddress;
     mapping (address => string) public toName;
+
     mapping (address => uint8) public remaininglove;
-    mapping (address => uint256) public love ;
+    mapping (address => uint256) public love;
     mapping (address => uint256) public rewards;
     
-    uint256 public totallove;
-    uint256 public castedlove;
-    uint256 public totalrewards;
+
+    //holonic indexing
+    mapping (string => uint256) public toHolonID ;
+    mapping (uint256 => address) public toHolonAddress;
+
 
     //Events
     event AddedMember(address member, string name);
     event RemovedMember(address member, string name);
     event ChangedName(string from, string to);
     event HolonRewarded(string name, uint256 amount);
+    event NewHolon(string name, uint256 id);
     
     constructor( address holonlead, string memory holonname, uint256 holonid) public {
        creator = msg.sender;
@@ -39,6 +47,7 @@ contract Holon is Ownable {
        totallove = 0;
        castedlove = 0;
        totalrewards = 0;
+       nholons = 0;
     }
 
     function getName() public view returns (string memory){
@@ -188,5 +197,33 @@ contract Holon is Ownable {
         require(success, "Transfer failed");
     }
     
+    //============================ Holons Management
+
+    function newHolon(string memory name) public returns (bool success)
+    {
+        uint256 id = toHolonID[name];
+        if (id > 0x0) //Holon name exists
+        {
+           return false;
+        }
+        else
+        {
+            nholons += 1;
+            Holon newholon = new Holon(msg.sender, name, nholons);
+            toHolonAddress[nholons] = address(newholon);
+            toHolonID[name] = nholons;
+            _holons.push(address(newholon));
+            emit NewHolon(name, nholons);
+        }
+        return true;
+    }
+
+    function listHolons()
+        external
+        view
+        returns (address payable[] memory)
+    {
+        return _holons;
+    }
     
 }
