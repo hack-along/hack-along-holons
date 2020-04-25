@@ -1,6 +1,6 @@
-pragma solidity ^0.5.10;
+pragma solidity ^0.6;
 
-import "../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "../node_modules/openzeppelin-solidity/contracts/access/Ownable.sol";
 import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 
 
@@ -25,9 +25,11 @@ contract Team is Ownable {
     mapping (address => string) public toName;
     mapping (address => uint8) public remainingvotes;
     mapping (address => uint256) public weight ;
+    mapping (address => uint256) public rewards;
     
-    uint256 internal totalvotes;
-    uint256 internal castedvotes;
+    uint256 public totalvotes;
+    uint256 public castedvotes;
+    uint256 public totalrewards;
 
     //Events
     event AddedMember(address member, string name);
@@ -65,16 +67,20 @@ contract Team is Ownable {
         emit TeamRewarded(name, msg.value);
     }
     
-    function ()
+    fallback  ()
         external
         payable
+        
     {
+        totalrewards += msg.value;
         uint256 unitReward = msg.value.div(castedvotes);
         for (uint256 i = 0; i < _members.length; i++) {
             address memberaddress = _members[i];
             uint256  amount = weight[memberaddress].mul(unitReward);
-            if (amount > 0)
+            if (amount > 0){
                 _transfer(memberaddress, amount);
+                rewards[memberaddress]+=amount;
+            }
         }
         emit TeamRewarded(name, msg.value);
     }
