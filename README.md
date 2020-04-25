@@ -3,7 +3,7 @@
 ### Create and join teams, delegate appreciation, share the rewards!
 --------
 
-How can we value a plurality of stigmergic contributions and encourage open innovation? How can we enhance trust in open innovation? 
+How can we value a plurality of stigmergic contributions and encourage open innovation? How can we enhance trust in open innovation? HOw can we warp the game from zero sum hackathons to positive sum hackalongs?
 
 --------
 ### User Personas
