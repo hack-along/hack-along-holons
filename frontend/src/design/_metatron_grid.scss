@@ -1,0 +1,217 @@
+$gridSize: 1.5vw;
+$circleR: 4;
+$circleD: $circleR * 2;
+$rows: (
+  1: 0,
+  2: 2,
+  3: 3,
+  4: 4,
+  5: 5,
+  6: 6,
+  7: 8
+);
+$columns: (
+  "1": 0,
+  "2": 1.75,
+  "3": 3.5,
+  "4": 5.25,
+  "5": 7
+);
+@function row-point($value) {
+  @return $value * $circleR + $circleR * 0.25;
+}
+@mixin calc-row($value) {
+  grid-row-start: row-point($value);
+  grid-row-end: row-point($value) + $circleD;
+}
+@mixin calc-col($value) {
+  grid-column-start: row-point($value);
+  grid-column-end: row-point($value) + $circleD;
+}
+@mixin size {
+  height: $gridSize * 40;
+  width: $gridSize * 36;
+}
+.m-grid-outer {
+  display: flex;
+  flex: 1;
+}
+
+.m-grid-container {
+  @include size;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(36, 1fr);
+  grid-template-rows: repeat(40, 1fr);
+  position: relative;
+  grid-gap: 0;
+  .frame {
+    width: 60%;
+    .path-hex {
+      stroke-width: 0.2;
+      stroke: rgba(255, 255, 255, 0.9);
+      fill: none;
+    }
+
+    .animated {
+      stroke-width: 0.1;
+      stroke: rgba(255, 255, 255, 0.4);
+      fill: none;
+      stroke-dasharray: 210;
+      animation: 4s dash ease-in forwards;
+    }
+
+    .path-circle {
+      stroke-width: 0.05;
+      stroke: rgba(255, 255, 255, 0.7);
+      fill: none;
+      stroke-dasharray: 210;
+      animation: 5s dash2 ease-in;
+
+      &.sm {
+        stroke-width: 0.1;
+        animation: 5s dash2 ease-in;
+        animation-direction: alternate;
+      }
+    }
+  }
+  @keyframes dash {
+    0% {
+      opacity: 0;
+    }
+
+    1% {
+      opacity: 1;
+      stroke-dashoffset: 110;
+    }
+
+    100% {
+      stroke-dashoffset: 310;
+    }
+  }
+  @keyframes dash2 {
+    0% {
+      stroke-dashoffset: 210;
+    }
+
+    70% {
+      stroke-dashoffset: 10;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .circle {
+    display: block;
+    position: absolute;
+    opacity: 1;
+    z-index: 1;
+
+    .c-inner {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 100%;
+      display: flex;
+      height: 12vw;
+      width: 12vw;
+      max-width: 100%;
+      max-height: 100%;
+      // transition: all 0.6s ease-in;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      svg,
+      p {
+        font-size: 0.7vw;
+        opacity: 1;
+        transition: all 0.6s ease-in;
+        transition-delay: 0.9s;
+      }
+
+      &.c-search {
+        background: #000f21;
+        z-index: 99;
+        input {
+          font-size: 0.9vw;
+          text-align: center;
+          border: none;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+          background: transparent;
+
+          outline: none;
+          &:active,
+          &:focus {
+            border: none;
+            outline: 0;
+            box-shadow: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 1);
+          }
+        }
+        span {
+          font-size: 0.9vw;
+        }
+      }
+    }
+    &.circle-blue {
+      .c-inner {
+        background: linear-gradient(
+          141deg,
+          black 0%,
+          #001432 30%,
+          #000f21 80%,
+          #00124c 100%
+        );
+        border-radius: 100%;
+      }
+      &.c-light {
+        .c-inner {
+          background: transparent;
+          border: 2px solid #001432;
+        }
+      }
+    }
+
+    &.c-search-outer {
+      z-index: 9999;
+    }
+
+    &.c-home {
+      opacity: 0;
+
+      z-index: 1;
+      .c-inner {
+        background: rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        svg,
+        p {
+          opacity: 0;
+        }
+      }
+    }
+
+    @each $row, $position in $rows {
+      &.row-#{$row} {
+        @include calc-row($position);
+      }
+    }
+    @each $column, $position in $columns {
+      &.c-#{$column} {
+        @include calc-col($position);
+      }
+    }
+  }
+
+  &.grid-gap {
+    grid-gap: 1px;
+    .circle-inner {
+      max-width: 80%;
+      max-height: 80%;
+      p {
+        opacity: 0;
+        height: 0;
+        transition: 0.5s;
+      }
+    }
+  }
+}

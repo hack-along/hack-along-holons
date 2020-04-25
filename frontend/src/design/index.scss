@@ -1,0 +1,40 @@
+body {
+  background: linear-gradient(
+    141deg,
+    black 0%,
+    #001432 30%,
+    #000f21 80%,
+    #00124c 100%
+  );
+
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  overflow: hidden;
+}
+html {
+  background: transparent;
+}
+
+.profile-view {
+  padding-top: 4rem;
+  background: white;
+  min-height: calc(100vh - 30px);
+  overflow: hidden;
+  .slider-inner {
+    z-index: 9999999999;
+    svg {
+      width: 100% !important;
+      height: 100% !important;
+      circle:nth-child(3) {
+        stroke-width: 0.2;
+        stroke: black;
+      }
+    }
+  }
+  .m-grid-container {
+    margin-top: -12vw;
+  }
+}
+
+@import "metatron_grid.scss";
