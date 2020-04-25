@@ -1,4 +1,7 @@
 import Vue from "vue";
+
+import "@/design/scss/index.scss";
+
 import "./plugins/fontawesome";
 import App from "./App.vue";
 import "./registerServiceWorker";

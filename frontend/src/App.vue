@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="container mx-auto">
     <div id="nav">
       <router-link to="/">Team</router-link>
     </div>
@@ -8,7 +8,6 @@
 </template>
 
 <style lang="scss">
-@import "./design/index.scss";
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

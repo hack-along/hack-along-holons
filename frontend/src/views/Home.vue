@@ -1,22 +1,32 @@
 <template>
-  <div class="profile-view">
-    <span v-if="ethereum && web3">
-      network: {{ web3.currentProvider.networkVersion }} account:{{
-        web3.eth.defaultAccount
-      }}
-    </span>
-    <h1 v-if="teamName" style="margin-bottom:2rem">{{ teamName }}</h1>
-    <template v-if="teamMembers">
-      <ul v-for="(member, index) in teamMembers" :key="`member-${index}`">
-        <li style="margin-bottom:2rem">
-          <h2>{{ member.name }}</h2>
+  <div>
+    <h1 v-if="teamName" class="text-5xl my-4 text-white">{{ teamName }}</h1>
+    <div v-if="teamMembers" class="flex mb-4 justify-center">
+      <div
+        v-for="(member, index) in teamMembers"
+        :key="`member-${index}`"
+        class="profile-card"
+      >
+        <div class="px-6 py-4">
+          <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
+          <small>{{ member.address }} </small>
+        </div>
+        <div class="px-6 py-4">
+          <span
+            class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
+          >
+            ❤️ {{ member.remainingvotes }} remaining
+          </span>
 
-          ❤️ {{ member.remainingvotes }} remaining
-          <button @click="sendLove(member.address, index)">send ❤️</button>
-          <br /><small>{{ member.address }} </small>
-        </li>
-      </ul>
-    </template>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
+            @click="sendLove(member.address, index)"
+          >
+            send ❤️
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
