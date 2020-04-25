@@ -1,0 +1,32 @@
+{
+  "name": "hack-along-holons",
+  "version": "1.0.0",
+  "description": "Create holons, give appreciation, share rewards",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hack-along/hack-along-holons.git"
+  },
+  "keywords": [
+    "Team",
+    "of",
+    "Teams",
+    "Teal",
+    "organizations",
+    "reward",
+    "flows"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hack-along/hack-along-holons/issues"
+  },
+  "homepage": "https://github.com/hack-along/hack-along-holons#readme",
+  "dependencies": {
+    "openzeppelin-solidity": "^3.0.0",
+    "truffle": "^5.1.23"
+  }
+}

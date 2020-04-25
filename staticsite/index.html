@@ -1,0 +1,303 @@
+
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Team fo Teams | Appreciative Value Flows </title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="keywords" content="Form Teams, give appreciation, share rewards" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <!--Custom Theme files-->
+  <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+
+  <link rel='shortcut icon' type='image/x-icon' class="fab fa-ethereum" />
+
+
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js" integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4" crossorigin="anonymous"></script>
+
+  <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+
+  <!--//Custom Theme files -->
+  <link href="style.css" rel="stylesheet" type="text/css" media="all" />
+  <!--web font-->
+  <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800' rel='stylesheet' type='text/css'><!--web font-->
+  <!--//web font-->
+
+
+
+</head>
+<body>
+  <!-- main -->
+  <div class="main">
+    <!--728x90-->
+    <h1><span class="fab fa-ethereum" ></span> Team of Teams  </h1>
+    <h3> Create your teams, give appreciation, share rewards!</h3>
+    <h4 > Contract address: <span id="contractAddress"></span></h4>
+    <!--728x90-->
+    <div class="container">
+      <div class="main-info">
+
+        <h2>Team Address</h2>
+        <input class="field name" id="teaminput" type="text" placeholder="Enter the address of the Team"></input>
+
+        <div id="teaminfo" style="display: none;">
+          <div class="form-left">
+            <h2>Team Info</h2>
+            <p><b>Name: </b><span id="teamname" type="text" class="price"></span></p>
+            <p><b>Size: </b><span id="teamsize" type="text"></span></p>
+            <p><b>Network: </b><span id="network" type="text"></span></p>
+          </div>
+
+
+          <div class="form-right" >
+            <h2>Your  Info</h2>
+            <p><b>Your address: </b><span id="address"  type="text"></span></p>
+            <p><b>Your name: </b><span id="name"  type="text"></span></p>
+            <p><b>Remaining appreciation votes: </b><span id="remaining"  type="text"></span></p>
+            <p><b>Your current appreciation: </b><span id="appreciation"  type="text"></span></p>
+            <p><b>Member: </b><span id="ismember"  type="text"></span></p>
+          </div>
+
+        </div>
+
+        <div class="clear">
+
+          <h2>Team Members</h2>
+
+          <div id ="members"></div>
+
+          <h2>Add Members</h2>
+          <input class="field name" id="memberaddress" type="text" placeholder="Enter the team member address"> </input>
+          <input class="field name" id="name" type="text" placeholder="Enter the team member name"> </input>
+
+          <button type="button" class="btn btn-primary" id="addmemberbutton">
+            Add Member
+          </button>
+
+          <div class="clear"> </div>
+
+          <h2>Send Appreciation to Members</h2>
+          <input class="field name" id="votememberaddress" type="text" placeholder="Enter the team member address"> </input>
+          <input class="field name" id="votepercentage" type="text" placeholder="Enter the % of appreciation"> </input>
+
+          <button type="button" class="btn btn-primary" id="votebutton">
+            Send Appreciation
+          </button>
+
+          <div class="clear"> </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div id="notifications"></div>
+
+    <!--//main -->
+    <!---728x90--->
+    <!--copyright-->
+    <div class="copyright">
+      <p> &copy; 2020  Hack-Along. All rights reserved </p>
+    </div>
+    <!--//copyright-->
+
+
+
+    <!---- And now the funny web3 stuff ... -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    
+    <script>
+
+      //First of all check for web3 providers
+      if (typeof web3 !== 'undefined') {
+        web3 = new Web3(web3.currentProvider);
+      } else {
+      // set the provider you want from Web3.providers
+        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        if (!web3.isConnected())
+        alert("You need to be connected to an ethereum node to use this page. Please install metamask.")
+      }
+
+      //set contract parameters
+      var TEAMABI = ([{ "inputs": [ { "internalType": "string", "name": "_name", "type": "string" }, { "internalType": "uint256", "name": "_uid", "type": "uint256" } ], "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "address", "name": "member", "type": "address" }, { "indexed": false, "internalType": "string", "name": "name", "type": "string" } ], "name": "AddedMember", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "string", "name": "from", "type": "string" }, { "indexed": false, "internalType": "string", "name": "to", "type": "string" } ], "name": "ChangedName", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" }, { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" } ], "name": "OwnershipTransferred", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "address", "name": "member", "type": "address" }, { "indexed": false, "internalType": "string", "name": "name", "type": "string" } ], "name": "RemovedMember", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "string", "name": "name", "type": "string" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" } ], "name": "TeamRewarded", "type": "event" }, { "stateMutability": "payable", "type": "fallback" }, { "inputs": [ { "internalType": "address payable", "name": "memberaddress", "type": "address" }, { "internalType": "string", "name": "_name", "type": "string" } ], "name": "addMember", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "blanketReward", "outputs": [], "stateMutability": "payable", "type": "function" }, { "inputs": [ { "internalType": "string", "name": "_name", "type": "string" } ], "name": "changeName", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "getAllMembers", "outputs": [ { "internalType": "address payable[]", "name": "", "type": "address[]" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "getName", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "isMember", "outputs": [ { "internalType": "bool", "name": "", "type": "bool" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "name", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "owner", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "remainingvotes", "outputs": [ { "internalType": "uint8", "name": "", "type": "uint8" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address payable", "name": "memberaddress", "type": "address" } ], "name": "removeMember", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "renounceOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "resetVoting", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "teamSize", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "string", "name": "", "type": "string" } ], "name": "toAddress", "outputs": [ { "internalType": "address", "name": "", "type": "address" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "toName", "outputs": [ { "internalType": "string", "name": "", "type": "string" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "newOwner", "type": "address" } ], "name": "transferOwnership", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [], "name": "uid", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "memberaddress", "type": "address" }, { "internalType": "uint8", "name": "percentage", "type": "uint8" } ], "name": "voteforMember", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [ { "internalType": "address", "name": "", "type": "address" } ], "name": "weight", "outputs": [ { "internalType": "uint256", "name": "", "type": "uint256" } ], "stateMutability": "view", "type": "function" } ])
+      var TeamContract = web3.eth.contract(TEAMABI);
+
+      // glonbal variables needed for transactions
+      var team;
+      var addr;
+
+      // read input and update interface
+      function refreshcontent() {
+        
+        var val = $("#teaminput").val()
+        //make sure it is a valid address
+        if (val.match(/\b0x[a-fA-F0-9]{40}\b/g)) {
+          $("#teaminfo").show();
+        }
+        else {
+          $("#teaminfo").hide();
+          return;
+        }
+        localStorage.setItem("teamaddress", val);
+
+        //initialize the contract info
+        team = web3.eth.contract(TEAMABI).at(val)
+        addr = web3.eth.accounts[0]
+        if (addr =="") {
+          alert("Please install Metamask and/or unlock your account");
+          return
+        }
+        
+
+
+        //================================ REFRESH TEAM INFO
+
+        team.getName.call({from: addr}, function(err, name) {
+          $('#teamname').html(name.toString())
+        })
+
+        team.getAllMembers.call(function(err, members) {
+          if(err) { console.log(err) }
+          if(members) { 
+            arr = members.toString().split(",");
+            $('#members').html("");
+            for(i=0;i<arr.length;i++)
+            $('#members').append("<p>"+arr[i]+"</p>")
+          }
+        })
+
+        team.teamSize.call({from: addr}, function(err, size) {
+          $('#teamsize').html(size.toString())
+        })
+
+        //================================ refresh account info
+        $('#address').html(addr);
+
+        team.toName.call(addr,function(err, name) {
+          if(err) { console.log(err) }
+          if(name) { $('#name').html(name) }
+            
+        })
+
+        team.weight.call(addr,function(err, appreciation) {
+          if(err) { console.log(err) }
+          if(appreciation) { $('#appreciation').html(appreciation.toString() )}
+            
+        })
+
+        team.remainingvotes.call(addr,function(err, remaining) {
+          if(err) { console.log(err) }
+          if(remaining) { $('#remaining').html(remaining.toString() ) }
+            
+        })
+
+        team.isMember.call(addr,function(err, ismember) {
+          if(err) { console.log(err) }
+          if(ismember) { $('#ismember').html("True") }
+          else { $('#ismember').html("False") } 
+        })
+
+        
+
+      }
+
+      $('#teaminput').val( localStorage.getItem("teamddress"));
+
+      $('#teaminput').keyup(refreshcontent)
+
+      //DETECT NETWORK AND SELECT THE RIGHT CONTRACT
+      web3.version.getNetwork((err, netId) => {
+        switch (netId) {
+          case "1":
+          $('#network').html("Main")
+         
+          localStorage.setItem("contractaddress","0x63aef31d8B104Eb9b6C189A513cc2F5EFa3Dee75");
+          $('#contractAddress').html("0x750099e938ea867276bbce94ab1d9c127e07a740");
+          break
+          case "2":
+          $('#network').html("Morden (deprecated)")
+          break
+          case "3":
+          $('#network').html("Ropsten")
+          localStorage.setItem("contractaddress","0x63aef31d8B104Eb9b6C189A513cc2F5EFa3Dee75");
+          $('#contractAddress').html("0x63aef31d8B104Eb9b6C189A513cc2F5EFa3Dee75");
+          break
+          default:
+          $('#network').html("Unknown")
+          localStorage.setItem("contractaddress","0x63aef31d8B104Eb9b6C189A513cc2F5EFa3Dee75");
+          $('#contractAddress').html("0x63aef31d8B104Eb9b6C189A513cc2F5EFa3Dee75");
+        }
+      })
+
+  
+      $("#addmemberbutton").click(function() {
+        team.addMember.sendTransaction($("#memberaddress").val(),$("#name").val(),{from: addr}, function (error, txHash) {
+        console.log('Transaction sent')
+        console.dir(txHash)
+        $("#spin").show();
+        var accountInterval = setInterval(
+          function() {
+            web3.eth.getTransactionReceipt(txHash,function(err,result){
+              if (result ){
+                refreshcontent();
+                clearTimeout(accountInterval);
+                $("#spin").hide();
+              }
+            })
+          }, 1000);
+
+          $('<div class="alert alert-success"> Add member transaction : <a href="https://ropsten.etherscan.io/tx/'+ txHash +'"  target="_blank">'+ txHash + '</a><br/> Please wait a few minutes for the changes to be reflected</div>').appendTo('#notifications');
+        })
+        ;
+      });
+
+      $("#votebutton").click(function() {
+      team.voteforMember.sendTransaction($("#votememberaddress").val(),$("#votepercentage").val(),{from: addr}, function (error, txHash) {
+        console.log('Transaction sent')
+        console.dir(txHash)
+        $("#spin2").show();
+        var accountInterval = setInterval(
+          function() {
+            web3.eth.getTransactionReceipt(txHash,function(err,result){
+              if (result ){
+                refreshcontent();
+                clearTimeout(accountInterval);
+                $("#spin2").hide();
+              }
+            })
+          }, 1000);
+
+          $('<div class="alert alert-success"> Vote transaction : <a href="https://ropsten.etherscan.io/tx/'+ txHash +'"  target="_blank">'+ txHash + '</a><br/> Please wait a few minutes for the changes to be reflected</div>').appendTo('#notifications');
+        })
+      });
+
+      refreshcontent()
+
+      </script>
+      <!-- Global site tag (gtag.js) - Google Analytics -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-113013289-1"></script>
+      <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-113013289-1');
+      </script>
+
+    </body>
+    </html>
