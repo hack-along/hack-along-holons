@@ -8,18 +8,9 @@ Address: 0xE680D5a71eBc0134E2aCc14eb69d8776159d8177
 :writing_hand: : Appreciative value distributions
 
 2. Category
-:writing_hand: :Online Collaboration
-:writing_hand: :Accounting
-:writing_hand: :Reputation
-:writing_hand: :Social
-:writing_hand: :Governance
-:writing_hand: :Project Management
-:writing_hand: :Fun
+:writing_hand: :Online Collaboration, Accountingm Reputation, Social, Governance, Project Management, Fun
 Org size:
-:writing_hand: :Crew
-:writing_hand: :Organisaion
-:writing_hand: :Community 
-:writing_hand: :Crowd
+Crew, Organisaion, Community, Crowd
 
 3. Summary
 - What does the process unlock for the org? / its partners?
