@@ -17,8 +17,7 @@ body {
 
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
-  overflow: hidden;
+  height: 100%;
 }
 html {
   background: transparent;
@@ -44,7 +43,7 @@ html {
     }
   }
   .m-grid-container {
-    margin-top: -12vw;
+    // margin-top: -12vw;
   }
 }
 
