@@ -9,6 +9,9 @@ import router from "./router";
 import store from "./store";
 
 Vue.component("modal", () => import("./components/Modal.vue"));
+Vue.component("holon-add-member", () =>
+  import("./components/HolonAddMember.vue")
+);
 Vue.config.productionTip = false;
 
 new Vue({

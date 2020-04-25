@@ -1,4 +1,4 @@
-$gridSize: 1.8rem;
+$gridSize: 1.5rem;
 $circleR: 4;
 $circleD: $circleR * 2;
 $rows: (
@@ -112,8 +112,8 @@ $columns: (
       // background: rgba(0, 0, 0, 0.5);
       border-radius: 100%;
       display: flex;
-      height: 15.6rem;
-      width: 15.6rem;
+      height: 12rem;
+      width: 12rem;
       max-width: 100%;
       max-height: 100%;
       // transition: all 0.6s ease-in;
@@ -121,6 +121,12 @@ $columns: (
       align-items: center;
       justify-content: center;
       flex-direction: column;
+      transition: 0.2s ease-in-out;
+      &.circleXL {
+        height: 24rem;
+        width: 24rem;
+        z-index: 9999;
+      }
       svg,
       p {
         font-size: 0.7rem;
