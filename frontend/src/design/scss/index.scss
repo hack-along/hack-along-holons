@@ -3,6 +3,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "components/modal.scss";
+@import "components/form.scss";
 
 body {
   background: linear-gradient(

@@ -20,13 +20,44 @@
 
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
-            @click="sendLove(member.address, index)"
+            @click="openAddLoveModal(index)"
           >
             send ❤️
           </button>
         </div>
       </div>
     </div>
+    <modal
+      v-if="showAddLoveModal"
+      @close="closeAddLoveModal"
+      :header="`Send to ${addLoveModal.header}`"
+    >
+      <div slot="body">
+        <span class="text-blue-600 font-extrabold text-3xl">
+          {{ addLoveModal.amount }}
+        </span>
+        <span class="text-gray-600 italic text-3xl pl-2">
+          / {{ addLoveModal.maxAmount - addLoveModal.amount }}
+        </span>
+        <div class="slidecontainer">
+          <input
+            type="range"
+            min="1"
+            :max="addLoveModal.maxAmount"
+            v-model="addLoveModal.amount"
+            class="slider"
+          />
+        </div>
+      </div>
+      <template slot="footer">
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
+          @click="sendLove(addLoveModal.target, addLoveModal.amount)"
+        >
+          send ❤️
+        </button>
+      </template>
+    </modal>
   </div>
 </template>
 <script>
@@ -36,7 +67,14 @@ export default {
   name: "HolonContainer",
   data() {
     return {
-      ethereum: false,
+      showAddLoveModal: false,
+      addLoveModal: {
+        header: null,
+        target: null,
+        amount: 1,
+        maxAmount: 100,
+      },
+
       contract: null,
       teamName: "",
       teamMembers: [],
@@ -87,7 +125,6 @@ export default {
         this.findMe();
       }
     },
-
     getToName(index) {
       this.team.methods
         .toName(this.teamMembers[index].address)
@@ -109,14 +146,27 @@ export default {
         (x) => x.address === web3.defaultAccount
       );
     },
-    sendLove(address) {
-      console.log(web3.defaultAccount);
+    sendLove(address, amount) {
       this.team.methods
-        .voteforMember(address, 1)
+        .voteforMember(address, amount)
         .send({ from: web3.defaultAccount })
         .then(() => {
           this.getRemainingVotes(this.user);
         });
+      this.closeAddLoveModal();
+    },
+    openAddLoveModal(index) {
+      this.addLoveModal.target = this.teamMembers[index].address;
+      this.addLoveModal.header = this.teamMembers[index].name;
+      this.addLoveModal.maxAmount = this.teamMembers[this.user].remainingvotes;
+      this.showAddLoveModal = true;
+    },
+    closeAddLoveModal() {
+      this.addLoveModal.target = "";
+      this.addLoveModal.header = "";
+      this.addLoveModal.amount = 1;
+      this.addLoveModal.maxAmount = 100;
+      this.showAddLoveModal = false;
     },
   },
   mounted() {

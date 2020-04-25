@@ -8,6 +8,7 @@ import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
 
+Vue.component("modal", () => import("./components/Modal.vue"));
 Vue.config.productionTip = false;
 
 new Vue({
