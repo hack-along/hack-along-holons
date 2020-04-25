@@ -53,7 +53,20 @@
       "eslint:recommended"
     ],
     "rules": {
-      "no-console": 0
+      "no-console": 0,
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "extends",
+            "apply",
+            "tailwind",
+            "components",
+            "utilities",
+            "screen"
+          ]
+        }
+      ]
     },
     "parserOptions": {
       "parser": "babel-eslint"
