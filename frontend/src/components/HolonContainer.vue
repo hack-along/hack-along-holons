@@ -2,11 +2,7 @@
   <div>
     <h1 v-if="teamName" class="text-5xl my-4 text-white">{{ teamName }}</h1>
     <div class="m-grid-outer">
-      <transition-group
-        class="m-grid-container"
-        :class="{ 'grid-gap': this.layout == 3, 'row-4 c-3': this.hidden }"
-        name="gridmove-move"
-      >
+      <transition-group class="m-grid-container" name="gridmove-move">
         <div class="circle row-4 c-3  c-search-outer" key="fixed-possition">
           <div class="c-inner text-white text-2xl">
             {{ teamName }}
@@ -16,7 +12,7 @@
           v-for="(member, index) in teamMembers"
           class="circle"
           :class="getCircleClass(index)"
-          :key="member.name"
+          :key="`${member.name}-${index}`"
         >
           <div class=" c-inner profile-card">
             <div class="px-6 py-4">
