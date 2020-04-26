@@ -89,12 +89,14 @@
         <div
           v-for="(member, index) in holonMembers"
           :key="`member-${index}`"
-          class="p-4 text-white max-w-md "
+          class="p-4 text-white max-w-md border border-blue-900 rounded-md m-3 "
         >
-          <div class="px-6 py-4 truncate max-w-xs">
-            <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
-            <small>{{ member.address }} </small>
-          </div>
+          <router-link :to="`/${member.address}`">
+            <div class="px-6 py-4 truncate max-w-xs">
+              <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
+              <small>{{ member.address }} </small>
+            </div>
+          </router-link>
           <div class="max-w-xs">
             <holon-stats
               :expanded="true"

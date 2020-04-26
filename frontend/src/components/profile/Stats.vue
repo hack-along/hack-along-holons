@@ -2,7 +2,7 @@
   <div>
     <span
       class="inline-block text-xs text-red-500 font-semibold mr-1 "
-      :class="{ 'text-base block': expanded }"
+      :class="{ 'text-base block p-1': expanded }"
       title="love recived"
     >
       <small v-if="expanded">Recived </small>
@@ -13,7 +13,7 @@
 
     <span
       class="inline-block text-xs text-green-500 font-semibold  mr-1 "
-      :class="{ 'text-base block': expanded }"
+      :class="{ 'text-base block p-1': expanded }"
       title="love left to sent"
     >
       <small v-if="expanded"> Unsent </small>
@@ -23,7 +23,7 @@
 
     <span
       class="inline-block text-xs text-white font-semibold  mr-1 "
-      :class="{ 'text-base block': expanded }"
+      :class="{ 'text-base block p-1': expanded }"
       title="precentage of total"
     >
       <small v-if="expanded"> Of total </small>{{ precentage }} %
