@@ -1,6 +1,10 @@
 <template>
   <div>
     <h1 v-if="holonName" class="text-5xl my-4 text-white">{{ holonName }}</h1>
+    {{ holonaddress }}
+    <div v-for="(holon, index) in holonList" :key="`holon-${index}`">
+      {{ index + 1 }} {{ holon }}
+    </div>
     <div class="m-grid-outer">
       <transition-group class="m-grid-container" name="gridmove-move">
         <div class="circle row-4 c-3  c-search-outer" key="fixed-possition">
@@ -123,6 +127,8 @@ export default {
       },
       defaultAccount: null,
       contract: null,
+      factory: null,
+      holonList: [],
       holonName: "",
       holonMembers: [],
       holon: null,
@@ -130,7 +136,7 @@ export default {
       holonabi: holonabi,
       hackalongabi: hackalongabi,
       holonaddress: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
-      hackalongddress: "0xD192DfDcB24Dc49591Ca6592bBca2ad68cEeA09E",
+      hackalongaddress: "0xD192DfDcB24Dc49591Ca6592bBca2ad68cEeA09E",
       circleClass: [
         "row-2 c-3",
         "row-3 c-4",
@@ -164,6 +170,13 @@ export default {
         this.hackalongabi,
         this.hackalongaddress
       );
+      console.log(this.hackalongaddress);
+      this.factory.methods
+        .listHolons()
+        .call()
+        .then((data) => {
+          this.holonList = data;
+        });
       this.getTeam();
     },
     getTeam() {
