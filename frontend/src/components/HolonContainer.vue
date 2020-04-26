@@ -1,15 +1,15 @@
 <template>
   <div>
-    <h1 v-if="teamName" class="text-5xl my-4 text-white">{{ teamName }}</h1>
+    <h1 v-if="holonName" class="text-5xl my-4 text-white">{{ holonName }}</h1>
     <div class="m-grid-outer">
       <transition-group class="m-grid-container" name="gridmove-move">
         <div class="circle row-4 c-3  c-search-outer" key="fixed-possition">
           <div class="c-inner text-white text-2xl">
-            {{ teamName }}
+            {{ holonName }}
           </div>
         </div>
         <div
-          v-for="(member, index) in teamMembers"
+          v-for="(member, index) in holonMembers"
           class="circle"
           :class="getCircleClass(index)"
           :key="`${member.name}-${index}`"
@@ -39,9 +39,9 @@
         </div>
       </transition-group>
     </div>
-    <div v-if="teamMembers" class="flex mb-4 justify-center">
+    <div v-if="holonMembers" class="flex mb-4 justify-center">
       <div
-        v-for="(member, index) in teamMembers"
+        v-for="(member, index) in holonMembers"
         :key="`member-${index}`"
         class="profile-card"
       >
@@ -100,7 +100,8 @@
 </template>
 <script>
 import web3 from "../libs/web3.js";
-import abi from "../data/holonabi.json";
+import holonabi from "../data/holonabi.json";
+import hackalongabi from "../data/hackalongabi.json";
 export default {
   name: "HolonContainer",
   data() {
@@ -114,12 +115,14 @@ export default {
       },
       defaultAccount: null,
       contract: null,
-      teamName: "",
-      teamMembers: [],
-      team: null,
+      holonName: "",
+      holonMembers: [],
+      holon: null,
       user: null,
-      abi: abi,
-      address: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
+      holonabi: holonabi,
+      hackalongabi: hackalongabi,
+      holonaddress: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
+      hackalongddress: "0xD192DfDcB24Dc49591Ca6592bBca2ad68cEeA09E",
       circleClass: [
         "row-2 c-3",
         "row-3 c-4",
@@ -148,39 +151,40 @@ export default {
           this.defaultAccount = result[0];
         }
       });
-      this.team = new web3.eth.Contract(this.abi, this.address);
+      this.holon = new web3.eth.Contract(this.holonabi, this.holonaddress);
+      this.factory = new web3.eth.Contract(this.hackalongabi, this.hackalongaddress);
       this.getTeam();
     },
     getTeam() {
-      this.team.methods
+      this.holon.methods
         .getName()
         .call()
         .then((data) => {
-          this.teamName = data;
+          this.holonName = data;
         });
 
-      this.team.methods
+      this.holon.methods
         .totallove()
         .call()
         .then((data) => {
           this.totalLove = data;
         });
 
-      this.team.methods
+      this.holon.methods
         .totalrewards()
         .call()
         .then((data) => {
           this.totalRewards = data;
       });
 
-      this.team.methods
+      this.holon.methods
         .castedlove()
         .call()
         .then((data) => {
           this.castedlove = data;
       });
 
-      this.team.methods
+      this.holon.methods
         .listMembers()
         .call()
         .then((data) => {
@@ -190,7 +194,7 @@ export default {
     },
     makeTeam(members) {
       for (var i = 0; i < members.length; i++) {
-        this.teamMembers.push({
+        this.holonMembers.push({
           address: members[i],
           name: "",
           love: "",
@@ -205,44 +209,44 @@ export default {
       }
     },
     getName(index) {
-      this.team.methods
-        .toName(this.teamMembers[index].address)
+      this.holon.methods
+        .toName(this.holonMembers[index].address)
         .call()
         .then((data) => {
-          this.teamMembers[index].name = data;
+          this.holonMembers[index].name = data;
         });
     },
     getRemainingLove(index) {
-      this.team.methods
-        .remaininglove(this.teamMembers[index].address)
+      this.holon.methods
+        .remaininglove(this.holonMembers[index].address)
         .call()
         .then((data) => {
-          this.teamMembers[index].remaininglove = data;
+          this.holonMembers[index].remaininglove = data;
         });
     },
     getRewards(index){
-      this.team.methods
-        .rewards(this.teamMembers[index].address)
+      this.holon.methods
+        .rewards(this.holonMembers[index].address)
         .call()
         .then((data) => {
-          this.teamMembers[index].rewards = data;
+          this.holonMembers[index].rewards = data;
         });
     },
     getLove(index){
-      this.team.methods
-        .love(this.teamMembers[index].address)
+      this.holon.methods
+        .love(this.holonMembers[index].address)
         .call()
         .then((data) => {
-          this.teamMembers[index].love = data;
+          this.holonMembers[index].love = data;
         });
     },
     findMe() {
-      this.user = this.teamMembers.findIndex(
+      this.user = this.holonMembers.findIndex(
         (x) => x.address === web3.defaultAccount
       );
     },
     sendLove(address, amount) {
-      this.team.methods
+      this.holon.methods
         .sendLoveTo(address, amount)
         .send({ from: web3.defaultAccount })
         .then(() => {
@@ -251,9 +255,9 @@ export default {
       this.closeAddLoveModal();
     },
     openAddLoveModal(index) {
-      this.addLoveModal.target = this.teamMembers[index].address;
-      this.addLoveModal.header = this.teamMembers[index].name;
-      this.addLoveModal.maxAmount = this.teamMembers[this.user].remaininglove;
+      this.addLoveModal.target = this.holonMembers[index].address;
+      this.addLoveModal.header = this.holonMembers[index].name;
+      this.addLoveModal.maxAmount = this.holonMembers[this.user].remaininglove;
       this.showAddLoveModal = true;
     },
     closeAddLoveModal() {

@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container mx-auto">
     <div id="nav">
-      <router-link to="/">Team</router-link>
+      <router-link to="/">Holon</router-link>
     </div>
     <router-view />
   </div>
