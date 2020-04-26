@@ -37,6 +37,13 @@
             </div>
           </div>
         </div>
+        <holon-add-member
+          :showAddField="showAddField"
+          :key="'add-member'"
+          @addMember="addMember"
+          @visible="toggleAddField"
+        >
+        </holon-add-member>
       </transition-group>
     </div>
     <div v-if="teamMembers" class="flex mb-4 justify-center">
@@ -106,6 +113,7 @@ export default {
   data() {
     return {
       showAddLoveModal: false,
+      showAddField: false,
       addLoveModal: {
         header: null,
         target: null,
@@ -171,14 +179,14 @@ export default {
         .call()
         .then((data) => {
           this.totalRewards = data;
-      });
+        });
 
       this.team.methods
         .castedlove()
         .call()
         .then((data) => {
           this.castedlove = data;
-      });
+        });
 
       this.team.methods
         .listMembers()
@@ -195,7 +203,7 @@ export default {
           name: "",
           love: "",
           remaininglove: "",
-          rewards:'',
+          rewards: "",
         });
         this.getName(i);
         this.getRemainingLove(i);
@@ -220,7 +228,7 @@ export default {
           this.teamMembers[index].remaininglove = data;
         });
     },
-    getRewards(index){
+    getRewards(index) {
       this.team.methods
         .rewards(this.teamMembers[index].address)
         .call()
@@ -228,7 +236,7 @@ export default {
           this.teamMembers[index].rewards = data;
         });
     },
-    getLove(index){
+    getLove(index) {
       this.team.methods
         .love(this.teamMembers[index].address)
         .call()
@@ -250,6 +258,15 @@ export default {
         });
       this.closeAddLoveModal();
     },
+    addMember(address, name) {
+      this.team.methods
+        .addMember(address, name)
+        .send({ from: web3.defaultAccount })
+        .then((data) => {
+          console.log(data);
+        });
+      this.showAddField = false;
+    },
     openAddLoveModal(index) {
       this.addLoveModal.target = this.teamMembers[index].address;
       this.addLoveModal.header = this.teamMembers[index].name;
@@ -262,6 +279,9 @@ export default {
       this.addLoveModal.amount = 1;
       this.addLoveModal.maxAmount = 100;
       this.showAddLoveModal = false;
+    },
+    toggleAddField(e) {
+      this.showAddField = e;
     },
     getCircleClass(index) {
       return this.circleClass[index];
