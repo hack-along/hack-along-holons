@@ -13,8 +13,9 @@
     >
       <font-awesome-icon :icon="['far', 'circle']" class="-mr-2" />
       <font-awesome-icon :icon="['far', 'circle']" />
-      <span>{{ holon.name }}</span></router-link
-    >
+
+      <span>{{ holon.name }}</span>
+    </router-link>
     <div class="h-24 block min-w-full  m-0">
       <h1 v-if="holonName" class="text-5xl  text-white ">
         {{ holonName }}
@@ -255,6 +256,7 @@ export default {
         .call()
         .then((data) => {
           this.holonList[index].name = data;
+          this.$forceUpdate();
         });
     },
     getTeam() {
