@@ -60,6 +60,7 @@
                 :remaining="member.remaininglove"
                 :recieved="member.rewards"
                 :casted="castedlove"
+                :totalrewards="totalrewards"
               />
               <button
                 v-if="member.address !== defaultAccount"
@@ -99,6 +100,7 @@
               :remaining="member.remaininglove"
               :recieved="member.rewards"
               :casted="castedlove"
+              :totalrewards="totalrewards"
             />
 
             <button

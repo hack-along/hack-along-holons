@@ -30,7 +30,7 @@
       style="max-width:7rem;"
       title="fund balance"
     >
-      {{ recieved }}
+      Ξ {{ recieved.slice(0, 5) }} / {{ totalrewards.slice(0, 5) }}
     </span>
   </div>
 </template>
@@ -38,7 +38,7 @@
 <script>
 export default {
   name: "stats",
-  props: ["love", "remaining", "recieved", "balance", "casted"],
+  props: ["love", "remaining", "recieved", "balance", "casted", "totalrewards"],
   data() {
     return {};
   },
