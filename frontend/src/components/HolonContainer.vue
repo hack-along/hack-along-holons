@@ -20,6 +20,9 @@
       <h1 v-if="holonName" class="text-5xl  text-white ">
         {{ holonName }}
       </h1>
+      <h3>
+        {{ holonaddress }}
+      </h3>
     </div>
     <div class="m-grid-outer -mt-20">
       <div class="m-grid-container" name="gridmove-move">
@@ -42,21 +45,24 @@
         >
           <div class=" c-inner profile-card">
             <div class="px-6 py-4 truncate max-w-xs">
-              <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
+
+              <router-link :to="`/${member.address}`">
+              <h2 class="font-bold text-white mb-2">{{ member.name }}</h2>
+              </router-link>
+              
               <small>{{ member.address }} </small>
             </div>
             <div>
               <span
-                v-if="member.address === defaultAccount"
+               
                 class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
               >
-                Received ❤️ {{ member.love }} <br />
-                Unsent ❤️ {{ member.remaininglove }} <br />
-                Received Ξ {{ member.rewards }}
+                ❤️ {{ member.love }} <br />
+               
               </span>
 
               <button
-                v-else
+                
                 class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
                 @click="openAddLoveModal(index)"
               >
@@ -91,11 +97,9 @@
             <span
               class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
             >
-              Received ❤️ {{ member.love }}
-              <br />
+              Received ❤️ {{ member.love }} / {{castedlove}} <br />
               Unsent ❤️ {{ member.remaininglove }} <br />
-              Received Ξ {{ member.rewards }} love% = Love of total
-              {{ Math.floor((member.love / castedlove) * 100) }} %
+              Received Ξ {{ member.rewards.slice(0, 5) }} / {{totalrewards.slice(0, 5)}}
             </span>
 
             <button
