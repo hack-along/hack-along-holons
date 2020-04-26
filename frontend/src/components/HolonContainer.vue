@@ -25,6 +25,7 @@
         <div class="circle row-4 c-3  c-search-outer" key="fixed-possition">
           <div class="c-inner text-white text-2xl">
             {{ holonName }}
+            Support button! (eth transaction)
           </div>
         </div>
         <div
@@ -130,6 +131,7 @@
 </template>
 <script>
 import web3 from "../libs/web3.js";
+import Box from "../libs/3box.js";
 import holonabi from "../data/holonabi.json";
 import hackalongabi from "../data/hackalongabi.json";
 export default {
@@ -176,6 +178,9 @@ export default {
     };
   },
   methods: {
+    
+
+    
     connectWeb3() {
       web3.eth.getAccounts((error, result) => {
         if (error) {
@@ -245,12 +250,14 @@ export default {
           love: "",
           remaininglove: "",
           rewards: "",
+          profile: "",
         });
         this.getName(i);
         this.getRemainingLove(i);
         this.getRewards(i);
         this.getLove(i);
         this.findMe();
+        this.get3box(i);
       }
     },
     getName(index) {
@@ -284,6 +291,22 @@ export default {
         .then((data) => {
           this.holonMembers[index].love = data;
         });
+    },
+    get3box(index){
+        Box.getProfile(this.holonMembers[index].address)
+        .then((err,profile) => {
+         if (err) return;
+        // let tmpData = ''
+        // Object.entries(profile).map(kv => {
+        // tmpData += kv[0] + ': ' + kv[1] + '<br />'
+        this.holonMembers[index].profile = profile.name;
+
+      //})
+        });
+        // Box.openBox(members[i],  window.ethereum, {}).then(box => {
+        // box.onSyncDone(syncComplete)
+        // window.box = box
+        // console.log(box)
     },
     findMe() {
       this.user = this.holonMembers.findIndex(
