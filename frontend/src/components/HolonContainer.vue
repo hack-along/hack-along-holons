@@ -8,12 +8,12 @@
     <router-link
       v-for="(holon, index) in holonList"
       class="holon-link"
-      :to="`/${holon}`"
+      :to="`/${holon.address}`"
       :key="`holonlink-${index}`"
     >
       <font-awesome-icon :icon="['far', 'circle']" class="-mr-2" />
       <font-awesome-icon :icon="['far', 'circle']" />
-      <span>{{ holon }}</span></router-link
+      <span>{{ holon.name }}</span></router-link
     >
     <div class="h-24 block min-w-full  m-0">
       <h1 v-if="holonName" class="text-5xl  text-white ">
@@ -29,9 +29,8 @@
               class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
               @click="openAddLoveModal(holonaddress, true)"
             >
-              send ❤️
+              Support ❤️ us!
             </button>
-            Support button! (eth transaction)
           </div>
         </div>
         <div
@@ -222,14 +221,35 @@ export default {
         this.hackalongabi,
         this.hackalongaddress
       );
-      console.log(this.hackalongaddress);
+      this.makeHolonList();
+
+      this.getTeam();
+    },
+    makeHolonList() {
       this.factory.methods
         .listHolons()
         .call()
         .then((data) => {
-          this.holonList = data;
+          if (data) {
+            console.log("holons" + data.length);
+            for (var i = 0; i < data.length; i++) {
+              this.holonList[i] = {
+                address: data[i],
+                name: "",
+              };
+              this.getHolonName(data[i], i);
+            }
+          }
         });
-      this.getTeam();
+    },
+    getHolonName(address, index) {
+      this.holonList[index].name = "Holon Name";
+      // this.factory.methods
+      //   .toName(address)
+      //   .call()
+      //   .then((data) => {
+      //     this.holonList[index].name = data;
+      //   });
     },
     getTeam() {
       this.holon.methods
