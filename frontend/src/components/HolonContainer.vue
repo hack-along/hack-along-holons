@@ -25,6 +25,12 @@
         <div class="circle row-4 c-3  c-search-outer" key="fixed-possition">
           <div class="c-inner text-white text-2xl">
             {{ holonName }}
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
+              @click="openAddLoveModal(holonaddress, true)"
+            >
+              send ❤️
+            </button>
           </div>
         </div>
         <div
@@ -104,13 +110,20 @@
         <span class="text-blue-600 font-extrabold text-3xl">
           {{ addLoveModal.amount }}
         </span>
-        <span class="text-gray-600 italic text-3xl pl-2">
-          / {{ addLoveModal.maxAmount - addLoveModal.amount }}
+        <span
+          v-if="addLoveModal.holon"
+          class="text-gray-600 italic text-3xl pl-2"
+        >
+          / {{ addLoveModal.maxAmount }} ETH
+        </span>
+        <span v-else class="text-gray-600 italic text-3xl pl-2 ">
+          / {{ addLoveModal.maxAmount - addLoveModal.amount }} ❤️
         </span>
         <div class="slidecontainer">
           <input
             type="range"
-            min="1"
+            :min="minAmount"
+            :step="stepSize"
             :max="addLoveModal.maxAmount"
             v-model="addLoveModal.amount"
             class="slider"
@@ -119,6 +132,14 @@
       </div>
       <template slot="footer">
         <button
+          v-if="addLoveModal.holon"
+          class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
+          @click="sendFunds(addLoveModal.target, addLoveModal.amount)"
+        >
+          send ❤️
+        </button>
+        <button
+          v-else
           class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
           @click="sendLove(addLoveModal.target, addLoveModal.amount)"
         >
@@ -140,9 +161,10 @@ export default {
       showAddLoveModal: false,
       showAddField: false,
       addLoveModal: {
+        holon: false,
         header: null,
         target: null,
-        amount: 1,
+        amount: 0,
         maxAmount: 100,
       },
       defaultAccount: null,
@@ -174,6 +196,14 @@ export default {
         "row-2 c-1",
       ],
     };
+  },
+  computed: {
+    minAmount() {
+      return this.addLoveModal.holon ? "0" : "1";
+    },
+    stepSize() {
+      return this.addLoveModal.holon ? "0.0001" : "1";
+    },
   },
   methods: {
     connectWeb3() {
@@ -299,6 +329,14 @@ export default {
         });
       this.closeAddLoveModal();
     },
+    sendFunds(address, amount) {
+      console.log("sending " + amount);
+      this.holon.methods
+        .sendLoveTo(address, amount) //what method is it?
+        .send({ from: web3.defaultAccount })
+        .then(() => {});
+      this.closeAddLoveModal();
+    },
     addMember(address, name) {
       this.holon.methods
         .addMember(address, name)
@@ -317,16 +355,31 @@ export default {
         });
       this.showAddField = false;
     },
-    openAddLoveModal(index) {
-      this.addLoveModal.target = this.holonMembers[index].address;
-      this.addLoveModal.header = this.holonMembers[index].name;
-      this.addLoveModal.maxAmount = this.holonMembers[this.user].remaininglove;
+    openAddLoveModal(index, holon) {
+      if (holon) {
+        this.addLoveModal.holon = true;
+        this.addLoveModal.target = this.holonaddress;
+        this.addLoveModal.header = this.holonName;
+        new web3.eth.getBalance(web3.defaultAccount).then((bal) => {
+          var balance = web3.utils.fromWei(bal, "ether");
+          this.addLoveModal.maxAmount = balance;
+        });
+      } else {
+        this.addLoveModal.holon = false;
+        this.addLoveModal.target = this.holonMembers[index].address;
+        this.addLoveModal.header = this.holonMembers[index].name;
+        this.addLoveModal.maxAmount = this.holonMembers[
+          this.user
+        ].remaininglove;
+      }
+
       this.showAddLoveModal = true;
     },
     closeAddLoveModal() {
+      this.addLoveModal.holon = false;
       this.addLoveModal.target = "";
       this.addLoveModal.header = "";
-      this.addLoveModal.amount = 1;
+      this.addLoveModal.amount = 0;
       this.addLoveModal.maxAmount = 100;
       this.showAddLoveModal = false;
     },
