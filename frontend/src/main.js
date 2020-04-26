@@ -10,6 +10,7 @@ import store from "./store";
 
 Vue.component("modal", () => import("./components/Modal.vue"));
 Vue.component("holon-add", () => import("./components/HolonAddEntity.vue"));
+Vue.component("holon-stats", () => import("./components/profile/Stats.vue"));
 Vue.config.productionTip = false;
 
 new Vue({

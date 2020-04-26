@@ -41,22 +41,20 @@
           :key="`${member.name}-${index}`"
         >
           <div class=" c-inner profile-card">
-            <div class="px-6 py-4 truncate max-w-xs">
-              <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
-              <small>{{ member.address }} </small>
+            <div class="px-6 py-4 ">
+              <h2 class="font-bold text-xl" :title="member.address">
+                {{ member.name }}
+              </h2>
             </div>
             <div>
-              <span
-                v-if="member.address === defaultAccount"
-                class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
-              >
-                Received ❤️ {{ member.love }} <br />
-                Unsent ❤️ {{ member.remaininglove }} <br />
-                Received Ξ {{ member.rewards }}
-              </span>
-
+              <holon-stats
+                :love="member.love"
+                :remaining="member.remaininglove"
+                :recieved="member.rewards"
+                :casted="castedlove"
+              />
               <button
-                v-else
+                v-if="member.address !== defaultAccount"
                 class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
                 @click="openAddLoveModal(index)"
               >
@@ -87,16 +85,13 @@
             <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
             <small>{{ member.address }} </small>
           </div>
-          <div class="px-6 py-4">
-            <span
-              class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
-            >
-              Received ❤️ {{ member.love }}
-              <br />
-              Unsent ❤️ {{ member.remaininglove }} <br />
-              Received Ξ {{ member.rewards }} love% = Love of total
-              {{ Math.floor((member.love / castedlove) * 100) }} %
-            </span>
+          <div class="max-w-xs">
+            <holon-stats
+              :love="member.love"
+              :remaining="member.remaininglove"
+              :recieved="member.rewards"
+              :casted="castedlove"
+            />
 
             <button
               class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
