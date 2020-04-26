@@ -83,10 +83,7 @@ export default {
     return {
       name: null,
       address: null,
-      addingMember: {
-        required: true,
-        default: false,
-      },
+      addingMember: false,
     };
   },
   methods: {
