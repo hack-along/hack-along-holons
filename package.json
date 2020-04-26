@@ -4,7 +4,13 @@
   "description": "Create holons, give appreciation, share rewards",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "truffle test",
+    "deploy": "truffle deploy",
+    "compile": "truffle compile",
+    "install-deps": "npm i && cd frontend && npm i && cd ..",
+    "serve": "cd frontent && vue-cli-service serve",
+    "build": "cd frontend && vue-cli-service build",
+    "lint": "cd frontend && vue-cli-service lint"
   },
   "repository": {
     "type": "git",
