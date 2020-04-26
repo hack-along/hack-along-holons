@@ -34,7 +34,7 @@
           :key="`${member.name}-${index}`"
         >
           <div class=" c-inner profile-card">
-            <div class="px-6 py-4">
+            <div class="px-6 py-4 truncate max-w-xs">
               <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
               <small>{{ member.address }} </small>
             </div>
@@ -66,29 +66,32 @@
         </holon-add>
       </div>
     </div>
-    <div v-if="holonMembers" class="flex mb-4 justify-center">
-      <div
-        v-for="(member, index) in holonMembers"
-        :key="`member-${index}`"
-        class="profile-card"
-      >
-        <div class="px-6 py-4">
-          <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
-          <small>{{ member.address }} </small>
-        </div>
-        <div class="px-6 py-4">
-          <span
-            class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
-          >
-            ❤️ {{ member.remaininglove }} remaining
-          </span>
+    <div v-if="holonMembers.length > 0">
+      <h2 class="text-2xl  text-white ">Full member list</h2>
+      <div class="flex mb-4 justify-center flex-wrap">
+        <div
+          v-for="(member, index) in holonMembers"
+          :key="`member-${index}`"
+          class="p-4 text-white max-w-md "
+        >
+          <div class="px-6 py-4 truncate max-w-xs">
+            <h2 class="font-bold text-xl mb-2">{{ member.name }}</h2>
+            <small>{{ member.address }} </small>
+          </div>
+          <div class="px-6 py-4">
+            <span
+              class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
+            >
+              ❤️ {{ member.remaininglove }} remaining
+            </span>
 
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
-            @click="openAddLoveModal(index)"
-          >
-            send ❤️
-          </button>
+            <button
+              class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
+              @click="openAddLoveModal(index)"
+            >
+              send ❤️
+            </button>
+          </div>
         </div>
       </div>
     </div>
