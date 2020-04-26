@@ -1,19 +1,27 @@
 <template>
   <div>
-    <h1 v-if="holonName" class="text-5xl my-4 text-white">{{ holonName }}</h1>
-
-    <router-link class="text-white mr-2" :to="`/${homeHolon}`"
-      >HomeHolon</router-link
-    >
+    <router-link class="holon-link mr-2" :to="`/${homeHolon}`">
+      <font-awesome-icon :icon="['far', 'circle']" class="-mr-2" />
+      <font-awesome-icon :icon="['far', 'circle']" />
+      Home
+    </router-link>
     <router-link
       v-for="(holon, index) in holonList"
-      class="text-white"
+      class="holon-link"
       :to="`/${holon}`"
       :key="`holonlink-${index}`"
-      >{{ holon }}</router-link
     >
-    <div class="m-grid-outer">
-      <transition-group class="m-grid-container" name="gridmove-move">
+      <font-awesome-icon :icon="['far', 'circle']" class="-mr-2" />
+      <font-awesome-icon :icon="['far', 'circle']" />
+      <span>{{ holon }}</span></router-link
+    >
+    <div class="h-24 block min-w-full  m-0">
+      <h1 v-if="holonName" class="text-5xl  text-white ">
+        {{ holonName }}
+      </h1>
+    </div>
+    <div class="m-grid-outer -mt-20">
+      <div class="m-grid-container" name="gridmove-move">
         <div class="circle row-4 c-3  c-search-outer" key="fixed-possition">
           <div class="c-inner text-white text-2xl">
             {{ holonName }}
@@ -56,7 +64,7 @@
           @visible="toggleAddField"
         >
         </holon-add>
-      </transition-group>
+      </div>
     </div>
     <div v-if="holonMembers" class="flex mb-4 justify-center">
       <div

@@ -1,8 +1,5 @@
 <template>
-  <div id="app" class="container mx-auto">
-    <div id="nav">
-      <router-link to="/">Holon</router-link>
-    </div>
+  <div id="app" class="container mx-auto pt-8">
     <router-view :key="$route.name + ($route.params.holon || '')" />
   </div>
 </template>
