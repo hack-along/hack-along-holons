@@ -1,7 +1,7 @@
 <template>
   <div>
     <span
-      class="inline-block text-xs text-red-700 font-semibold mr-1 "
+      class="inline-block text-xs text-red-500 font-semibold mr-1 "
       title="love recived"
     >
       <font-awesome-icon :icon="['far', 'circle']" class="-mr-2" />
@@ -18,7 +18,7 @@
     </span>
 
     <span
-      class="inline-block text-xs text-grey-500 font-semibold  mr-1 "
+      class="inline-block text-xs text-white font-semibold  mr-1 "
       title="precentage of total"
     >
       {{ precentage }} %
@@ -26,7 +26,7 @@
     <br />
     <span
       v-if="recieved"
-      class="inline-block text-xs text-grey-500  font-semibold   truncate"
+      class="inline-block text-xs text-white font-semibold   truncate"
       style="max-width:7rem;"
       title="fund balance"
     >

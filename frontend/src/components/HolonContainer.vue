@@ -20,6 +20,9 @@
       <h1 v-if="holonName" class="text-5xl  text-white ">
         {{ holonName }}
       </h1>
+      <h3>
+        {{ holonaddress }}
+      </h3>
     </div>
     <div class="m-grid-outer -mt-20">
       <div class="m-grid-container" name="gridmove-move">
@@ -42,7 +45,7 @@
         >
           <div class=" c-inner profile-card">
             <div class="px-6 py-4 ">
-              <h2 class="font-bold text-xl" :title="member.address">
+              <h2 class="font-bold text-xl text-white" :title="member.address">
                 {{ member.name }}
               </h2>
             </div>
