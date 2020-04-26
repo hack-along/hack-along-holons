@@ -49,7 +49,9 @@
                 v-if="member.address === defaultAccount"
                 class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
               >
-                remaining ❤️ {{ member.remaininglove }}
+                Received ❤️ {{ member.love }} <br />
+                Unsent ❤️ {{ member.remaininglove }} <br />
+                Received Ξ {{ member.rewards }}
               </span>
 
               <button
@@ -88,7 +90,9 @@
             <span
               class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
             >
-              ❤️ {{ member.remaininglove }} remaining
+              Received ❤️ {{ member.love }} <br />
+              Unsent ❤️ {{ member.remaininglove }} <br />
+              Received Ξ {{ member.rewards }}
             </span>
 
             <button
@@ -179,6 +183,9 @@ export default {
       hackalongabi: hackalongabi,
       homeHolon: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
       holonaddress: null,
+      castedlove: 0,
+      totallove: 0,
+      totalrewards: 0,
       hackalongaddress: "0xD192DfDcB24Dc49591Ca6592bBca2ad68cEeA09E",
       circleClass: [
         "row-3 c-2",
@@ -263,14 +270,14 @@ export default {
         .totallove()
         .call()
         .then((data) => {
-          this.totalLove = data;
+          this.totallove = data;
         });
 
       this.holon.methods
         .totalrewards()
         .call()
         .then((data) => {
-          this.totalRewards = data;
+          this.totalrewards = web3.utils.fromWei(data, "ether");
         });
 
       this.holon.methods
@@ -299,9 +306,9 @@ export default {
           profile: "",
         });
         this.getName(i);
-        this.getRemainingLove(i);
-        this.getRewards(i);
         this.getLove(i);
+        this.getRewards(i);
+        this.getRemainingLove(i);
         this.findMe();
       }
     },
@@ -326,7 +333,7 @@ export default {
         .rewards(this.holonMembers[index].address)
         .call()
         .then((data) => {
-          this.holonMembers[index].rewards = data;
+          this.holonMembers[index].rewards = web3.utils.fromWei(data, "ether");
         });
     },
     getLove(index) {
