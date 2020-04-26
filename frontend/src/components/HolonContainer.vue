@@ -186,7 +186,7 @@ export default {
       castedlove: 0,
       totallove: 0,
       totalrewards: 0,
-      hackalongaddress: "0xD192DfDcB24Dc49591Ca6592bBca2ad68cEeA09E",
+      hackalongaddress: "0x11D142091C53A699eE80Aee0ab509F28BE4C3564",
       circleClass: [
         "row-3 c-2",
         "row-2 c-3",

@@ -1,4 +1,4 @@
-   pragma solidity ^0.6;
+pragma solidity ^0.6;
 import "../node_modules/openzeppelin-solidity/contracts/access/Ownable.sol";
 import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./Holon.sol";
@@ -13,8 +13,8 @@ import "./Holon.sol";
  */
 contract HackAlong is Ownable {
    
-    mapping (string => uint256) public toId ;
-    mapping (uint256 => address) public toAddress;
+    mapping (string => address) public toAddress;
+    mapping (address => string) public toName;
 
     address payable[] internal _holons;
 
@@ -26,23 +26,18 @@ contract HackAlong is Ownable {
         nholons = 0;
     }
 
-   function newHolon(string memory name) public returns (bool success)
+   function newHolon(string memory name) public returns (address holon)
     {
-        uint256 id = toId[name];
-        if (id > 0x0) //Holon name exists
-        {
-           return false;
-        }
-        else
-        {
-            nholons += 1;
-            Holon newholon = new Holon(msg.sender, name, nholons);
-            toAddress[nholons] = address(newholon);
-            toId[name] = nholons;
-            _holons.push(address(newholon));
-            emit NewHolon(name, nholons);
-        }
-        return true;
+        if (toAddress[name] > address(0x0)) return toAddress[name];
+    
+        nholons += 1;
+        Holon newholon = new Holon(msg.sender, name, nholons);
+        toAddress[name] = address(newholon);
+        toName[address(newholon)]= name;
+        _holons.push(address(newholon));
+        emit NewHolon(name, nholons);
+      
+        return toAddress[name];
     }
 
     function listHolons()
