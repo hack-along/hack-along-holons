@@ -90,9 +90,11 @@
             <span
               class="inline-block bg-gray-200  rounded-full px-3 py-1 text-sm font-semibold text-gray-700 m-2"
             >
-              Received ❤️ {{ member.love }} <br />
+              Received ❤️ {{ member.love }}
+              <br />
               Unsent ❤️ {{ member.remaininglove }} <br />
-              Received Ξ {{ member.rewards }}
+              Received Ξ {{ member.rewards }} love% = Love of total
+              {{ Math.floor((member.love / castedlove) * 100) }} %
             </span>
 
             <button
@@ -284,6 +286,7 @@ export default {
         .castedlove()
         .call()
         .then((data) => {
+          console.log("GOT CASTED LOV" + data);
           this.castedlove = data;
         });
 
