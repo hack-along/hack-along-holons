@@ -8,9 +8,6 @@ How can we enhance trust in open innovation?
 How can we warp the game from zero sum hackathons to positive sum hackalongs?
 
 ### Presentation
-![](images/presie1.png)
-![](images/presie2.png)
-![](images/presie3.png)
 ![](images/presie4.png)
 ![](images/presie5.png)
 ![](images/presie6.png)
@@ -58,7 +55,7 @@ Our suggestion is to make them Hackalongs, not hackthons. Lets change the incent
 **How can we do this?** Simple - we tokenise the most general form of value (peoples appreciation for eachother) and distribute prize money along these lines of trust !
 
 ### Conrete example
-Kay is a part of a team of four. They have decided to incentivise collaboration and assign 20% of their **potential** prize money to this cause. 
+Kay is a part of a team of four. They have decided to incentivise collaboration and assign 20% of their **potential** prize money to this cause.
 
 His friend Peter is also part of a team of four. They have also decided to incentivise collaboration and assign 20% of their **potential** prize money to this cause.
 
