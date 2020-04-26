@@ -56,6 +56,7 @@
             </div>
             <div>
               <holon-stats
+                :expanded="false"
                 :love="member.love"
                 :remaining="member.remaininglove"
                 :recieved="member.rewards"
@@ -96,6 +97,7 @@
           </div>
           <div class="max-w-xs">
             <holon-stats
+              :expanded="true"
               :love="member.love"
               :remaining="member.remaininglove"
               :recieved="member.rewards"
