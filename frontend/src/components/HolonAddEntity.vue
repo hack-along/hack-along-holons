@@ -6,14 +6,14 @@
     }"
   >
     <div
-      class="c-inner text-white text-2xl  cursor-pointer overflow-hidden"
-      @click="$emit('visible', true)"
+      class="c-inner text-white text-2xl  cursor-pointer overflow-hidden "
       :class="{
         'circleXL bg-white border border-blue-700': showAddField,
       }"
     >
       <form v-show="showAddField" class="w-full max-w-sm">
         <div
+          v-if="addingMember"
           class="flex items-center border-b border-b-2 border-blue-700 py-2 mb-8"
         >
           <input
@@ -42,15 +42,29 @@
           <button
             class="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded"
             type="button"
-            @click="debounceaddMember"
+            @click="debounceAdd"
           >
-            add member
+            <span v-if="addingMember"> add member</span>
+            <span v-else>add holon</span>
           </button>
         </div>
       </form>
-      <span v-show="!showAddField">
-        <font-awesome-icon icon="plus" class="text-3xl" /> add member</span
+
+      <button
+        v-show="!showAddField"
+        @click="$emit('visible', true)"
+        class=" p-1 hover:bg-blue-600  text-white w-full h-full "
       >
+        holon
+      </button>
+      <font-awesome-icon icon="plus" class="text-3xl absolute" />
+      <button
+        class="p-1 hover:bg-blue-600 ease-in-out text-white w-full h-full "
+        v-show="!showAddField"
+        @click="addingMemberDebounce"
+      >
+        member
+      </button>
     </div>
   </div>
 </template>
@@ -61,7 +75,7 @@ export default {
   name: "AddMember",
   props: {
     showAddField: {
-      true: false,
+      required: true,
       default: false,
     },
   },
@@ -69,19 +83,33 @@ export default {
     return {
       name: null,
       address: null,
+      addingMember: {
+        required: true,
+        default: false,
+      },
     };
   },
   methods: {
     resetInput() {
       this.address = null;
       this.name = null;
+      this.addingMember = false;
     },
+    addingMemberDebounce: _.debounce(function() {
+      this.addingMember = true;
+      this.$emit("visible", true);
+    }, 200),
     debounceClose: _.debounce(function() {
       this.$emit("visible", false);
       this.resetInput();
     }, 200),
-    debounceaddMember: _.debounce(function() {
-      this.$emit("addMember", this.address, this.name);
+    debounceAdd: _.debounce(function() {
+      if (this.addingMember) {
+        this.$emit("addMember", this.address, this.name);
+      } else {
+        this.$emit("addHolon", this.name);
+      }
+
       this.resetInput();
     }, 200),
   },

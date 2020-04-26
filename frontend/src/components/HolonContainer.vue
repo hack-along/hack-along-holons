@@ -41,13 +41,14 @@
             </div>
           </div>
         </div>
-        <holon-add-member
+        <holon-add
           :showAddField="showAddField"
           :key="'add-member'"
           @addMember="addMember"
+          @addHolon="newHolon"
           @visible="toggleAddField"
         >
-        </holon-add-member>
+        </holon-add>
       </transition-group>
     </div>
     <div v-if="holonMembers" class="flex mb-4 justify-center">
@@ -138,12 +139,12 @@ export default {
       holonaddress: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
       hackalongaddress: "0xD192DfDcB24Dc49591Ca6592bBca2ad68cEeA09E",
       circleClass: [
+        "row-3 c-2",
         "row-2 c-3",
         "row-3 c-4",
         "row-5 c-4",
         "row-6 c-3",
         "row-5 c-2",
-        "row-3 c-2",
 
         "row-1 c-3",
         "row-2 c-5",
@@ -287,6 +288,15 @@ export default {
         });
       this.showAddField = false;
     },
+    newHolon(name) {
+      this.factory.methods
+        .newHolon(name)
+        .send({ from: web3.defaultAccount })
+        .then((data) => {
+          console.log(data);
+        });
+      this.showAddField = false;
+    },
     openAddLoveModal(index) {
       this.addLoveModal.target = this.holonMembers[index].address;
       this.addLoveModal.header = this.holonMembers[index].name;
@@ -302,6 +312,7 @@ export default {
     },
     toggleAddField(e) {
       this.showAddField = e;
+      this.addingMember = false;
     },
     getCircleClass(index) {
       return this.circleClass[index];
