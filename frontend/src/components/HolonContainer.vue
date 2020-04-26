@@ -332,11 +332,11 @@ export default {
       this.closeAddLoveModal();
     },
     sendFunds(address, amount) {
-      console.log("sending " + amount);
-      this.holon.methods
-        .sendLoveTo(address, amount) //what method is it?
-        .send({ from: web3.defaultAccount })
-        .then(() => {});
+      web3.eth.sendTransaction({
+        to: address,
+        from: web3.defaultAccount,
+        value: web3.utils.toWei(amount, "ether"),
+      });
       this.closeAddLoveModal();
     },
     addMember(address, name) {
