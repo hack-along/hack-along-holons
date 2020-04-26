@@ -45,9 +45,14 @@
         >
           <div class=" c-inner profile-card">
             <div class="px-6 py-4 ">
-              <h2 class="font-bold text-xl text-white" :title="member.address">
-                {{ member.name }}
-              </h2>
+              <router-link :to="`/${member.address}`">
+                <h2
+                  class="font-bold text-xl text-white"
+                  :title="member.address"
+                >
+                  {{ member.name }}
+                </h2>
+              </router-link>
             </div>
             <div>
               <holon-stats

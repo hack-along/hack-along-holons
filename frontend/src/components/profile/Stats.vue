@@ -30,7 +30,6 @@
       style="max-width:7rem;"
       title="fund balance"
     >
-      <font-awesome-icon :icon="['fas', 'triangle']" class="-mr-2" />
       {{ recieved }}
     </span>
   </div>
