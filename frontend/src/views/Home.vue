@@ -1,6 +1,6 @@
 <template>
   <div>
-    <HolonContainer />
+    <HolonContainer :holon-nav="$route.params.holon" />
   </div>
 </template>
 

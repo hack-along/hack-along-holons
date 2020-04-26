@@ -1,10 +1,17 @@
 <template>
   <div>
     <h1 v-if="holonName" class="text-5xl my-4 text-white">{{ holonName }}</h1>
-    {{ holonaddress }}
-    <div v-for="(holon, index) in holonList" :key="`holon-${index}`">
-      {{ index + 1 }} {{ holon }}
-    </div>
+
+    <router-link class="text-white mr-2" :to="`/${homeHolon}`"
+      >HomeHolon</router-link
+    >
+    <router-link
+      v-for="(holon, index) in holonList"
+      class="text-white"
+      :to="`/${holon}`"
+      :key="`holonlink-${index}`"
+      >{{ holon }}</router-link
+    >
     <div class="m-grid-outer">
       <transition-group class="m-grid-container" name="gridmove-move">
         <div class="circle row-4 c-3  c-search-outer" key="fixed-possition">
@@ -116,6 +123,7 @@ import holonabi from "../data/holonabi.json";
 import hackalongabi from "../data/hackalongabi.json";
 export default {
   name: "HolonContainer",
+  props: ["holonNav"],
   data() {
     return {
       showAddLoveModal: false,
@@ -136,7 +144,8 @@ export default {
       user: null,
       holonabi: holonabi,
       hackalongabi: hackalongabi,
-      holonaddress: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
+      homeHolon: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
+      holonaddress: null,
       hackalongaddress: "0xD192DfDcB24Dc49591Ca6592bBca2ad68cEeA09E",
       circleClass: [
         "row-3 c-2",
@@ -319,7 +328,20 @@ export default {
     },
   },
   mounted() {
-    this.connectWeb3();
+    if (this.holonNav) {
+      let isEth = /^0x[a-fA-F0-9]{40}$/.test(this.holonNav);
+      if (isEth) {
+        console.log("SET ALTERNATIVE NAV");
+        this.holonaddress = this.holonNav;
+        this.connectWeb3();
+      } else {
+        this.holonaddress = this.homeHolon;
+        this.connectWeb3();
+      }
+    } else {
+      this.holonaddress = this.homeHolon;
+      this.connectWeb3();
+    }
   },
 };
 </script>

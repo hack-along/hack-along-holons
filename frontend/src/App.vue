@@ -3,7 +3,7 @@
     <div id="nav">
       <router-link to="/">Holon</router-link>
     </div>
-    <router-view />
+    <router-view :key="$route.name + ($route.params.holon || '')" />
   </div>
 </template>
 
