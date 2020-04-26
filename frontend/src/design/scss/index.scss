@@ -48,9 +48,10 @@ html {
   }
 }
 a.holon-link {
-  max-width: 8rem;
+  max-width: 13rem;
   display: inline-block;
-  @apply truncate  text-white;
+  margin-right: 1rem;
+  @apply truncate text-white;
   &:hover {
     @apply text-blue-300;
   }

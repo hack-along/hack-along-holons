@@ -220,7 +220,6 @@ export default {
         if (error) {
           console.log(error);
         } else {
-          console.log(result);
           web3.defaultAccount = result[0];
           this.defaultAccount = result[0];
         }
@@ -240,7 +239,6 @@ export default {
         .call()
         .then((data) => {
           if (data) {
-            console.log("holons" + data.length);
             for (var i = 0; i < data.length; i++) {
               this.holonList[i] = {
                 address: data[i],
@@ -252,13 +250,12 @@ export default {
         });
     },
     getHolonName(address, index) {
-      this.holonList[index].name = "Holon Name";
-      // this.factory.methods
-      //   .toName(address)
-      //   .call()
-      //   .then((data) => {
-      //     this.holonList[index].name = data;
-      //   });
+      this.factory.methods
+        .toName(address)
+        .call()
+        .then((data) => {
+          this.holonList[index].name = data;
+        });
     },
     getTeam() {
       this.holon.methods
@@ -286,7 +283,6 @@ export default {
         .castedlove()
         .call()
         .then((data) => {
-          console.log("GOT CASTED LOV" + data);
           this.castedlove = data;
         });
 
@@ -294,7 +290,6 @@ export default {
         .listMembers()
         .call()
         .then((data) => {
-          console.log(data);
           this.makeTeam(data);
         });
     },
@@ -374,7 +369,7 @@ export default {
         .addMember(address, name)
         .send({ from: web3.defaultAccount })
         .then((data) => {
-          console.log(data);
+          console.log("success" + data);
         });
       this.showAddField = false;
     },
@@ -427,7 +422,6 @@ export default {
     if (this.holonNav) {
       let isEth = /^0x[a-fA-F0-9]{40}$/.test(this.holonNav);
       if (isEth) {
-        console.log("SET ALTERNATIVE NAV");
         this.holonaddress = this.holonNav;
         this.connectWeb3();
       } else {
