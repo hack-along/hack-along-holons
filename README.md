@@ -9,6 +9,7 @@ How can we warp the game from zero sum hackathons to positive sum hackalongs?
 
 ### Presentation
 ![](images/presie4.png)
+![](images/frontend.jpg)
 ![](images/presie5.png)
 ![](images/presie6.png)
 ![](images/presie7.png)
@@ -68,3 +69,5 @@ If 1st place is $500 then Kays team distributes 20% of that to who ever they ass
 If 2nd place is $250 and Peters team bugeted 20% of their prize money for appreciated contributions and Kay was delegated 50% of each members "appreciation allowance", then Kay will recieve 10% of the total prize money - an extra $25!
 
 Kay walks away a happy hacker with $125 total, a quarter more than his team members who just concentrated on their own work.
+
+[![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethturin.com)
