@@ -372,6 +372,7 @@ export default {
         to: address,
         from: web3.defaultAccount,
         value: web3.utils.toWei(amount, "ether"),
+        gas:90000,
       });
       this.closeAddLoveModal();
     },
