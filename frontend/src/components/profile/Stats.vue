@@ -8,7 +8,7 @@
       <small v-if="expanded">Recived </small>
       <font-awesome-icon :icon="['far', 'arrow-right']" class="-mr-2" />
       <font-awesome-icon :icon="['far', 'heart']" />
-      {{ love }}
+      {{ love }} ({{ precentage }} %<small v-if="expanded"> of total </small>)
     </span>
 
     <span
@@ -19,14 +19,6 @@
       <small v-if="expanded"> Unsent </small>
       <font-awesome-icon :icon="['far', 'heart']" />
       {{ remaining }}
-    </span>
-
-    <span
-      class="inline-block text-xs text-white font-semibold  mr-1 "
-      :class="{ 'text-base block p-1': expanded }"
-      title="precentage of total"
-    >
-      <small v-if="expanded"> Of total </small>{{ precentage }} %
     </span>
     <br />
     <span
