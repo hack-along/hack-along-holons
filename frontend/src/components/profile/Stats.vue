@@ -6,7 +6,7 @@
       title="love recived"
     >
       <small v-if="expanded">Recived </small>
-      <font-awesome-icon :icon="['far', 'circle']" class="-mr-2" />
+      <font-awesome-icon :icon="['far', 'arrow-right']" class="-mr-2" />
       <font-awesome-icon :icon="['far', 'heart']" />
       {{ love }}
     </span>
@@ -58,8 +58,8 @@ export default {
   },
   computed: {
     precentage() {
-      if (this.recieved && this.casted) {
-        return Math.floor((this.recieved / this.casted) * 100);
+      if (this.love && this.casted) {
+        return Math.floor((this.love / this.casted) * 100);
       } else {
         return 0;
       }
