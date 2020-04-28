@@ -73,13 +73,18 @@ contract Holon is Ownable {
         public
     {
         totalrewards += msg.value;
-        uint256 unitReward = msg.value.div(castedlove);
+        uint256 unitReward;
+
+        if (castedlove > 0 ) // if love was shared
+            unitReward = msg.value.div(castedlove);
+        else //if no love was shared, blanket approach
+            unitReward = msg.value.div(_members.length);
+
         for (uint256 i = 0; i < _members.length; i++) {
-            address memberaddress = _members[i];
-            uint256  amount = love[memberaddress].mul(unitReward);
+            uint256  amount = love[_members[i]].mul(unitReward);
             if (amount > 0){
-                _transfer(memberaddress, amount);
-                rewards[memberaddress]+=amount;
+                _transfer(_members[i], amount);
+                rewards[_members[i]]+=amount;
             }
         }
         emit HolonRewarded(name, msg.value);

@@ -33,7 +33,7 @@
               class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
               @click="openAddLoveModal(holonaddress, true)"
             >
-              Support ❤️ us!
+              Send funds to holon
             </button>
           </div>
         </div>
@@ -368,12 +368,11 @@ export default {
       this.closeAddLoveModal();
     },
     sendFunds(address, amount) {
-      web3.eth.sendTransaction({
-        to: address,
-        from: web3.defaultAccount,
-        value: web3.utils.toWei(amount, "ether"),
-        gas:90000,
-      });
+      console.log(address);
+      console.log(amount);
+      this.holon.methods
+        .weightedReward()
+        .send({from: web3.defaultAccount,value: web3.utils.toWei(amount, "ether")});
       this.closeAddLoveModal();
     },
     addMember(address, name) {
