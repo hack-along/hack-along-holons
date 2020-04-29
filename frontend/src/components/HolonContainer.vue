@@ -16,6 +16,13 @@
 
       <span>{{ holon.name }}</span>
     </router-link>
+    <div class="h-24 block min-w-full text-white m-0">
+    <h> Welcome to Holons, the new way to work together, give appreciation, and share funds.</h>
+    <p> Holon nembers can cast a max of 100 appreciations to other members (and not to themselves) </p>
+    <p> Funds sent to an holon will be shared across the members, proportionally to the appreciation received</p>
+    <p> Holons can also be members of an holon, but only the holon leader can share appreciation on behalf of the holon</p>
+    </div>
+
     <div class="h-24 block min-w-full  m-0">
       <h1 v-if="holonName" class="text-5xl  text-white ">
         {{ holonName }}
