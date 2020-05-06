@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link class="holon-link mr-2" :to="`/${homeHolon}`">
+    <router-link id="v-step-0" class="holon-link mr-2" :to="`/${homeHolon}`">
       <font-awesome-icon :icon="['far', 'circle']" class="-mr-2" />
       <font-awesome-icon :icon="['far', 'circle']" />Home
     </router-link>
@@ -44,6 +44,7 @@
             </div>
             <div>
               <holon-stats
+                :class="{'v-step-1' : index===0}"
                 :expanded="false"
                 :love="member.love"
                 :remaining="member.remaininglove"
@@ -60,6 +61,7 @@
           </div>
         </div>
         <holon-add
+          id="v-step-2"
           :showAddField="showAddField"
           :key="'add-member'"
           @addMember="addMember"

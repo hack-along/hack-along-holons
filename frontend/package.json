@@ -20,6 +20,7 @@
     "vue-circle-slider": "^1.0.2",
     "vue-router": "^3.1.6",
     "vue-tailwind": "^0.4.6",
+    "vue-tour": "^1.3.0",
     "vuex": "^3.1.3",
     "web3": "^1.2.7"
   },
