@@ -1,8 +1,9 @@
+
 pragma solidity ^0.6;
 
 import "../node_modules/openzeppelin-solidity/contracts/access/Ownable.sol";
 import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
-
+import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
 contract Holon is Ownable {
     using SafeMath for uint256;
 
@@ -16,6 +17,8 @@ contract Holon is Ownable {
     
     address payable[] internal _members;
     
+    bool isOpen;
+
     //mapping (address => uint256) toID;
     mapping (address => bool) public isMember;
     mapping (string => address) public toAddress;
@@ -23,6 +26,8 @@ contract Holon is Ownable {
     mapping (address => uint8) public remaininglove;
     mapping (address => uint256) public love;
     mapping (address => uint256) public rewards;
+    mapping (address => mapping (address => uint256)) public appreciation;
+    mapping (address => uint256) sentappreciation;
     
 
 
@@ -89,6 +94,30 @@ contract Holon is Ownable {
         }
         emit HolonRewarded(name, msg.value);
     }
+
+    function weightedTokenReward (address tokenaddress, uint256 tokenamount)
+        payable
+        public
+    {
+        IERC20 token = IERC20(tokenaddress);
+
+        for (uint256 i = 0; i < _members.length; i++) {
+            //calculate reward for memeber i:
+            //1) loop and see what flow they get
+            uint256  amount = 0;
+            for (uint256 j = 0; j < _members.length; i++){
+                amount += appreciation[_members[i]][_members[j]].div(sentappreciation[_members[j]]);
+            }
+            if (amount > 0 ){
+                Holon holon = Holon(_members[i]);
+                if (holon.getHolonSize() > 0) //isHolon?
+                    holon.weightedTokenReward(tokenaddress, tokenamount.mul(100).div( amount)); //call the right function within it
+                else // isHuman
+                    token.transfer(_members[i], amount);
+            }
+        }
+        emit HolonRewarded(name, msg.value);
+    }
     
     // splits reward equally across team members
      function blanketReward()
@@ -113,6 +142,16 @@ contract Holon is Ownable {
         love[memberaddress] += percentage;
         castedlove += percentage;
     }
+
+    function appreciate(address memberaddress, uint8 amount) public{
+        require (isMember[msg.sender], "Lover is not a Holon member"); // validate sender is a Holon member
+        require (isMember[memberaddress], "Loved is not a Holon member"); // validate receiver is a Holon member
+        require (memberaddress != msg.sender, "Lover cannot love himself.. that's selfish"); // sender can't vote for himself.
+        sentappreciation[msg.sender] += amount;
+        appreciation[msg.sender][memberaddress]+= amount;
+    }
+
+   
     
     //This function must be called when the member is a holon, and can only be called by the holon lead on behalf of the entire holon
     
@@ -138,17 +177,19 @@ contract Holon is Ownable {
          }
     }
 
-    function addMember(address payable memberaddress, string memory _name)
+    function addMember(address payable memberaddress, string memory membername)
         public
         onlyOwner
     {
+        require(isMember[memberaddress] == false, "Member already added");
+        require(toAddress[membername] == address(0), "Name is already taken");
         _members.push(memberaddress);
-        toAddress[_name] = memberaddress;
-        toName[memberaddress] = _name;
+        toAddress[membername] = memberaddress;
+        toName[memberaddress] = membername;
         isMember[memberaddress] =  true;
         remaininglove[memberaddress] = 100;
 
-        emit AddedMember(memberaddress, _name);
+        emit AddedMember(memberaddress, name);
     }
     
     function removeMember(address payable memberaddress)

@@ -33,7 +33,7 @@ contract HackAlong is Ownable {
         nholons += 1;
         Holon newholon = new Holon(msg.sender, name, nholons);
         toAddress[name] = address(newholon);
-        toName[address(newholon)]= name;
+        toName[address(newholon)] = name;
         _holons.push(address(newholon));
         emit NewHolon(name, nholons);
       
@@ -46,5 +46,9 @@ contract HackAlong is Ownable {
         returns (address payable[] memory)
     {
         return _holons;
+    }
+
+    function getHolon(uint256 holonid) public view returns (address){
+        return _holons[holonid];
     }
 }
