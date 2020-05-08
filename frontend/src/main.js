@@ -7,6 +7,11 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
+import VueTour from 'vue-tour'
+
+require('vue-tour/dist/vue-tour.css')
+
+Vue.use(VueTour)
 
 Vue.component("modal", () => import("./components/Modal.vue"));
 Vue.component("holon-add", () => import("./components/HolonAddEntity.vue"));
