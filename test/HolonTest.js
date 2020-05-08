@@ -115,5 +115,32 @@ contract("Holon", async accounts => {
 
     })
     
-    
+    describe("Holon Appreciation Test", _ => {
+        let factory;
+        let holonaddress;
+        let holon;
+  
+        it("Member shares appreciation to another member", async () => {
+            factory = await Hackalong.deployed();
+            holonaddress = await factory.getHolon.call(0);
+            holon = await Holon.at(holonaddress);
+          
+            await holon.appreciate (secondMember, 10, {from:firstMember})
+            await holon.appreciate (firstMember, 11, {from:secondMember})
+            const appr1 = await holon.appreciation.call(firstMember, secondMember);
+            const appr2 = await holon.appreciation.call(secondMember, firstMember);
+            assert.equal(appr1.toString(), "10", "Wrong appreciation received");
+            assert.equal(appr2.toString(), "11", "Wrong appreciation received");
+          
+        })
+
+        it("Holon shares appreciation to another member", async () => {
+
+        })
+
+        it("Holon shares appreciation to another holon member", async () => {
+        })
+    })
+
+  
 })
