@@ -84,7 +84,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="http://maijagrudule.com/"><img src="https://avatars2.githubusercontent.com/u/34912439?v=4" width="100px;" alt=""/><br /><sub><b>Maija Grudule</b></sub></a><br /><a href="https://github.com/hack-along/hack-along-holons/commits?author=MGrudule" title="Code">💻</a></td>
+    <td align="center"><a href="http://maijagrudule.com/"><img src="https://avatars2.githubusercontent.com/u/34912439?v=4" width="100px;" alt=""/><br /><sub><b>Maija Grudule</b></sub></a><br /><a href="https://github.com/hack-along/hack-along-holons/commits?author=MGrudule" title="Code">💻</a> <a href="#design-MGrudule" title="Design">🎨</a></td>
   </tr>
 </table>
 
