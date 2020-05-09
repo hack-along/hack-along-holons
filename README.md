@@ -1,4 +1,7 @@
 # Hack-along Holons - aka Team of teams
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ### Create and join teams, delegate appreciation, share the rewards!
 --------
@@ -71,3 +74,22 @@ If 2nd place is $250 and Peters team bugeted 20% of their prize money for apprec
 Kay walks away a happy hacker with $125 total, a quarter more than his team members who just concentrated on their own work.
 
 [![ETH Turin 2020](https://img.shields.io/badge/%CE%9E-ETH%20Turin%202020-F64060.svg)](https://ethturin.com)
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="http://www.liminalvillage.com"><img src="https://avatars0.githubusercontent.com/u/596489?v=4" width="100px;" alt=""/><br /><sub><b>Roberto Valenti</b></sub></a><br /><a href="https://github.com/hack-along/hack-along-holons/commits?author=robertovalenti" title="Code">💻</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
