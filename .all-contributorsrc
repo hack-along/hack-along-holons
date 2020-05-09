@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "MGrudule",
+      "name": "Maija Grudule",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/34912439?v=4",
+      "profile": "http://maijagrudule.com/",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "hack-along-holons",
+  "projectOwner": "hack-along",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
