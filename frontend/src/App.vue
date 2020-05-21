@@ -23,11 +23,11 @@ export default {
           header: {
             title: "Get Started"
           },
-          content: `Explore some <strong>holons</strong>! <br> Click about the navigation bar`
+          content: `Welcome to <strong> holons </strong>!`
         },
         {
           target: ".v-step-1",
-          content: "Every holon has members",
+          content: "If you send a transaction to the holon, it will be split to its members according to the appreciation received",
           params: {
             placement: "bottom",
             enableScrolling: false
@@ -35,7 +35,7 @@ export default {
         },
         {
           target: "#v-step-2",
-          content: "Click here to add members <br> or holons",
+          content: "Click here to create your holon and add members to it",
           params: {
             placement: "left",
             enableScrolling: false
