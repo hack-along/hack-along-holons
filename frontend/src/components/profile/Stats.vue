@@ -24,22 +24,13 @@
     </div>
     <br />
     <span
-<<<<<<< HEAD
       v-if="rewards"
-=======
-      v-if="recieved"
->>>>>>> develop
       class="inline-block flex-initial text-xs text-white font-semibold"
       :class="{ 'text-base block': expanded }"
       title="fund balance"
     >
-<<<<<<< HEAD
       
       Ξ {{ rewards.slice(0, 5) }} /
-=======
-      <small v-if="expanded">Recived</small>
-      Ξ {{ recieved.slice(0, 5) }} /
->>>>>>> develop
       {{ totalrewards.slice(0, 5) }}
       <small v-if="expanded"> Recived</small>
     </span>

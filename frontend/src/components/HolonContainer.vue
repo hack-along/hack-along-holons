@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link id="v-step-0" class="holon-link mr-2" :to="`/${homeHolon}`">
+    <router-link  class="holon-link mr-2" :to="`/${homeHolon}`">
       <font-awesome-icon :icon="['far', 'circle']" class="-mr-2" />
       <font-awesome-icon :icon="['far', 'circle']" />Home
     </router-link>
@@ -15,14 +15,9 @@
 
       <span>{{ holon.name }}</span>
     </router-link>
-    <div class="h-24 block min-w-full text-white m-0">
-    <h> Welcome to Holons, a new way to co-create together by signalling appreciation to divide funds.</h>
-    <p> Funds sent to a holon are spread across members in proportion to the appreciation they receive.</p>
-    <p> Other holons can also be added as members, the holon leader can share appreciation on behalf of the holon.</p>
-    </div>
 
     <div class="h-24 block min-w-full m-0">
-      <h1 v-if="holonName" class="text-5xl text-white">{{ holonName }}</h1>
+      <h1 id="v-step-0" v-if="holonName" class="text-5xl text-white">{{ holonName }}</h1>
       <h3>{{ holonaddress }}</h3>
     </div>
     <div class="m-grid-outer -mt-20">
@@ -31,14 +26,15 @@
           <div class="c-inner text-white text-2xl">
             {{ holonName }}
             <button
-              class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
+              
+              class="v-step-2 bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
               @click="openAddLoveModal(holonaddress, true)"
             >Send funds to holon</button>
           </div>
         </div>
         <div
           v-for="(member, index) in holonMembers"
-          class="circle"
+          class="circle v-step-4"
           :class="getCircleClass(index)"
           :key="`${member.name}-${index}`"
         >
@@ -50,7 +46,6 @@
             </div>
             <div>
               <holon-stats
-                :class="{'v-step-1' : index===0}"
                 :expanded="false"
                 :love="member.love"
                 :remaining="member.remaininglove"
@@ -60,14 +55,14 @@
               />
               <button
                 v-if="member.address !== defaultAccount"
-                class="bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
+                class="v-step-1 bg-blue-500 hover:bg-blue-700 text-white rounded-full px-3 py-1 text-sm font-semibold m-2"
                 @click="openAddLoveModal(index)"
               >send ❤️</button>
             </div>
           </div>
         </div>
         <holon-add
-          id="v-step-2"
+          class="v-step-3"
           :showAddField="showAddField"
           :key="'add-member'"
           @addMember="addMember"

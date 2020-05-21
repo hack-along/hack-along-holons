@@ -23,19 +23,35 @@ export default {
           header: {
             title: "Get Started"
           },
-          content: `Welcome to <strong> holons </strong>!`
+          content: `Welcome to <strong> Holons </strong> the new way of sharing rewards using appreciation!`
         },
         {
           target: ".v-step-1",
-          content: "If you send a transaction to the holon, it will be split to its members according to the appreciation received",
+          content: "Each member can send appreciation to other members, but not to themselves!",
           params: {
             placement: "bottom",
             enableScrolling: false
           }
         },
         {
-          target: "#v-step-2",
-          content: "Click here to create your holon and add members to it",
+          target: ".v-step-2",
+          content: "Any transaction sent to the holon will be split to its members according to the received appreciation ",
+          params: {
+            placement: "bottom",
+            enableScrolling: false
+          }
+        },
+        {
+          target: ".v-step-3",
+          content: "Click here to create your holon or add members to it",
+          params: {
+            placement: "left",
+            enableScrolling: false
+          }
+        },
+        {
+          target: ".v-step-4",
+          content: "Other holons can also be members, so holons (and rewards) are stackable! Click on an holon to navigate into it.",
           params: {
             placement: "left",
             enableScrolling: false
