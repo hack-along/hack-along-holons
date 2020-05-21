@@ -4,7 +4,10 @@ pragma solidity ^0.6;
 import "../node_modules/openzeppelin-solidity/contracts/access/Ownable.sol";
 import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
-contract Holon is Ownable {
+
+
+
+ contract Holon is Ownable {
     using SafeMath for uint256;
 
     //Public holon variables
@@ -36,8 +39,9 @@ contract Holon is Ownable {
     event RemovedMember(address member, string name);
     event ChangedName(string from, string to);
     event HolonRewarded(string name, uint256 amount);
+    event MemberRewarded(address member, uint256 amount);
     
-    constructor( address holonlead, string memory holonname, uint256 holonid) public {
+    constructor( address holonlead, string memory holonname, uint256 holonid)  public {
        creator = msg.sender;
        transferOwnership( holonlead );
        name = holonname;
@@ -73,7 +77,7 @@ contract Holon is Ownable {
     }
     
     // same as above, but can be called explicitly
-    function weightedReward ()
+    function weightedLoveReward ()
         payable
         public
     {
@@ -95,11 +99,64 @@ contract Holon is Ownable {
         emit HolonRewarded(name, msg.value);
     }
 
+    function weightedReward ()
+        payable
+        public
+    {
+        uint256 activemembers = 0;
+        for (uint256 i = 0; i < _members.length; i++) {
+          if (sentappreciation[_members[i]] > 0)
+                activemembers++;
+        }
+        for (uint256 i = 0; i < _members.length; i++) {
+          
+            //calculate reward % for memeber i:
+            //1) loop and see what flow they get
+            uint256  amount = 0;
+            for (uint256 j = 0; j < _members.length; j++){
+                if (appreciation[_members[j]][_members[i]] > 0)
+                    amount += appreciation[_members[j]][_members[i]].mul(100).div(sentappreciation[_members[j]]);
+            }
+            amount = amount.div(activemembers);
+            if (amount > 0 ){
+                _transfer(_members[i], msg.value.mul(amount).div( 100));
+                emit MemberRewarded(_members[i],msg.value.mul(amount).div( 100));
+            }
+        }
+        emit HolonRewarded(name, msg.value);
+    }
+
     function weightedTokenReward (address tokenaddress, uint256 tokenamount)
         payable
         public
     {
         IERC20 token = IERC20(tokenaddress);
+        require (token.balanceOf(msg.sender)> tokenamount, "not enough tokens in wallet");
+        require (token.allowance(msg.sender, address(this))> tokenamount, "not enough allowance");
+        //compute currently active members;
+        uint256 activemembers = 0;
+        for (uint256 i = 0; i < _members.length; i++) {
+          if (sentappreciation[_members[i]] > 0)
+                activemembers++;
+        }
+        
+        for (uint256 i = 0; i < _members.length; i++) {
+            //calculate reward % for memeber i:
+            uint256  amount = 0;
+            for (uint256 j = 0; j < _members.length; j++){
+                if (appreciation[_members[j]][_members[i]] > 0)
+                    amount += appreciation[_members[j]][_members[i]].mul(100).div(sentappreciation[_members[j]]);
+            }
+            amount = amount.div(activemembers);
+            //TODO: IF HOLON, CALL weightedTokenReward Function
+            //Send eventual reward 
+            if (amount > 0 ){
+                token.transfer(_members[i], 1);//tokenamount.mul(amount).div( 100));
+                //emit MemberRewarded(_members[i],msg.value.mul(amount).div( 100));
+            }
+        }
+
+
 
         for (uint256 i = 0; i < _members.length; i++) {
             //calculate reward for memeber i:
@@ -143,7 +200,7 @@ contract Holon is Ownable {
         castedlove += percentage;
     }
 
-    function appreciate(address memberaddress, uint8 amount) public{
+    function appreciate(address memberaddress, uint256 amount) public{
         require (isMember[msg.sender], "Lover is not a Holon member"); // validate sender is a Holon member
         require (isMember[memberaddress], "Loved is not a Holon member"); // validate receiver is a Holon member
         require (memberaddress != msg.sender, "Lover cannot love himself.. that's selfish"); // sender can't vote for himself.

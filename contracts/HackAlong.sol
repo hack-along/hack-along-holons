@@ -15,6 +15,7 @@ contract HackAlong is Ownable {
    
     mapping (string => address) public toAddress;
     mapping (address => string) public toName;
+    mapping (address => address payable[]) public holons;
 
     address payable[] internal _holons;
 
@@ -35,6 +36,8 @@ contract HackAlong is Ownable {
         toAddress[name] = address(newholon);
         toName[address(newholon)] = name;
         _holons.push(address(newholon));
+        holons[msg.sender].push(address(newholon));
+
         emit NewHolon(name, nholons);
       
         return toAddress[name];
@@ -46,6 +49,14 @@ contract HackAlong is Ownable {
         returns (address payable[] memory)
     {
         return _holons;
+    }
+
+    function listMyHolons()
+        external
+        view
+        returns (address payable[] memory)
+    {
+        return holons[msg.sender];
     }
 
     function getHolon(uint256 holonid) public view returns (address){
