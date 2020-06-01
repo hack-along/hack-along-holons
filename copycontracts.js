@@ -21,8 +21,8 @@ for (var i in files) {
 
 	console.log(data);
 
-	var outputFileName = __dirname + 'frontend/src/contracts/' + f.contractName + ".json";
+	var outputFileName = __dirname + '/frontend/src/data/' + f.contractName + ".json";
 	console.log('saving to', outputFileName);
-	fs.writeFile(outputFileName, JSON.stringify(data), 'utf8',function(){});
+	fs.writeFile(outputFileName, JSON.stringify(data.abi), 'utf8',function(){});
 }
 
