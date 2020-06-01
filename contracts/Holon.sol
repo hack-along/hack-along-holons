@@ -4,11 +4,12 @@ pragma solidity ^0.6;
 import "../node_modules/openzeppelin-solidity/contracts/access/Ownable.sol";
 import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
-
-
+import "./IHolonFactory.sol";
 
  contract Holon is Ownable {
     using SafeMath for uint256;
+
+    IHolonFactory factory;
 
     //Public holon variables
     string public name;
@@ -19,6 +20,7 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
     uint256 public totalrewards; // total amount of $ that has been given to this holon
     
     address payable[] internal _members;
+    address payable[] internal _contributors;
     
     bool isOpen;
 
@@ -31,8 +33,6 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
     mapping (address => uint256) public rewards;
     mapping (address => mapping (address => uint256)) public appreciation;
     mapping (address => uint256) sentappreciation;
-    
-
 
     //Events
     event AddedMember(address member, string name);
@@ -42,17 +42,21 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
     event MemberRewarded(address member, uint256 amount);
     
     constructor( address holonlead, string memory holonname, uint256 holonid)  public {
-       creator = msg.sender;
        transferOwnership( holonlead );
        name = holonname;
        uid = holonid;
        totallove = 0;
        castedlove = 0;
        totalrewards = 0;
+       factory = IHolonFactory(msg.sender);
     }
 
     function getName() public view returns (string memory){
         return name;
+    }
+
+    function getFactory() public view returns (address){
+        return address(factory);
     }
     
     function changeName(string memory _name)
@@ -75,6 +79,20 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
     {
         weightedReward();
     }
+
+        // splits reward equally across team members
+     function blanketReward()
+        payable
+        public
+    {
+        if (msg.value < 1000000) return;
+        uint256 memberAmount = msg.value.div(_members.length);
+        for (uint256 i = 0; i < _members.length; i++) {
+            _transfer(_members[i], memberAmount);
+        }
+        emit HolonRewarded(name, msg.value);
+    }
+    
     
     // same as above, but can be called explicitly
     function weightedLoveReward ()
@@ -99,31 +117,46 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
         emit HolonRewarded(name, msg.value);
     }
 
+    // function createHolon(string memory name)
+    //     public
+    // {
+    //     HolonFactory factory = HolonFactory(this.creator);
+    //     factory.newHolon(name);
+    // }
+
     function weightedReward ()
         payable
         public
     {
+
         uint256 activemembers = 0;
         for (uint256 i = 0; i < _members.length; i++) {
           if (sentappreciation[_members[i]] > 0)
                 activemembers++;
         }
-        for (uint256 i = 0; i < _members.length; i++) {
-          
-            //calculate reward % for memeber i:
-            //1) loop and see what flow they get
-            uint256  amount = 0;
-            for (uint256 j = 0; j < _members.length; j++){
-                if (appreciation[_members[j]][_members[i]] > 0)
-                    amount += appreciation[_members[j]][_members[i]].mul(100).div(sentappreciation[_members[j]]);
+
+        if (activemembers > 0)
+        {
+            for (uint256 i = 0; i < _members.length; i++) {
+                //calculate reward % for memeber i:
+                //1) loop and see what flow they get
+                uint256  amount = 0;
+                for (uint256 j = 0; j < _members.length; j++){
+                    if (appreciation[_members[j]][_members[i]] > 0)
+                        amount += appreciation[_members[j]][_members[i]].mul(100).div(sentappreciation[_members[j]]);
+                }
+                amount = amount.div(activemembers);
+                if (amount > 1 ){
+                    _transfer(_members[i], msg.value.mul(amount).div( 100));
+                    emit MemberRewarded(_members[i],msg.value.mul(amount).div( 100));
+                }
             }
-            amount = amount.div(activemembers);
-            if (amount > 0 ){
-                _transfer(_members[i], msg.value.mul(amount).div( 100));
-                emit MemberRewarded(_members[i],msg.value.mul(amount).div( 100));
-            }
+            emit HolonRewarded(name, msg.value);
         }
-        emit HolonRewarded(name, msg.value);
+        else{
+            blanketReward();
+        }
+
     }
 
     function weightedTokenReward (address tokenaddress, uint256 tokenamount)
@@ -131,63 +164,46 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
         public
     {
         IERC20 token = IERC20(tokenaddress);
-        require (token.balanceOf(msg.sender)> tokenamount, "not enough tokens in wallet");
-        require (token.allowance(msg.sender, address(this))> tokenamount, "not enough allowance");
+        require (token.balanceOf(msg.sender)>= tokenamount, "not enough tokens in wallet");
+        require (token.allowance(msg.sender, address(this))>= tokenamount, "not enough allowance");
+
         //compute currently active members;
         uint256 activemembers = 0;
         for (uint256 i = 0; i < _members.length; i++) {
           if (sentappreciation[_members[i]] > 0)
                 activemembers++;
         }
-        
-        for (uint256 i = 0; i < _members.length; i++) {
-            //calculate reward % for memeber i:
-            uint256  amount = 0;
-            for (uint256 j = 0; j < _members.length; j++){
-                if (appreciation[_members[j]][_members[i]] > 0)
-                    amount += appreciation[_members[j]][_members[i]].mul(100).div(sentappreciation[_members[j]]);
-            }
-            amount = amount.div(activemembers);
-            //TODO: IF HOLON, CALL weightedTokenReward Function
-            //Send eventual reward 
-            if (amount > 0 ){
-                token.transfer(_members[i], 1);//tokenamount.mul(amount).div( 100));
-                //emit MemberRewarded(_members[i],msg.value.mul(amount).div( 100));
-            }
-        }
 
+        if (activemembers > 0)
+        {
+            for (uint256 i = 0; i < _members.length; i++) {
+                //calculate reward % for memeber i:
+                //1) loop and see what flow they get
+                uint256  amount = 0;
+                for (uint256 j = 0; j < _members.length; j++){
+                    if (appreciation[_members[j]][_members[i]] > 0)
+                        amount += appreciation[_members[j]][_members[i]].mul(100).div(sentappreciation[_members[j]]);
+                }
+                amount = amount.div(activemembers);
 
-
-        for (uint256 i = 0; i < _members.length; i++) {
-            //calculate reward for memeber i:
-            //1) loop and see what flow they get
-            uint256  amount = 0;
-            for (uint256 j = 0; j < _members.length; i++){
-                amount += appreciation[_members[i]][_members[j]].div(sentappreciation[_members[j]]);
-            }
-            if (amount > 0 ){
-                Holon holon = Holon(_members[i]);
-                if (holon.getHolonSize() > 0) //isHolon?
-                    holon.weightedTokenReward(tokenaddress, tokenamount.mul(100).div( amount)); //call the right function within it
-                else // isHuman
-                    token.transfer(_members[i], amount);
+                if (amount > 1 ){
+                    
+                    //(bool success, bytes memory returnData) = _members[i].call(abi.encode("getHolonSize()"));
+                    //if (success ){ //is Holon
+                        if (factory.isHolon(_members[i])){
+                            Holon holon = Holon(_members[i]);
+                            holon.weightedTokenReward(tokenaddress, tokenamount.mul(amount).div( 100));
+                        } else 
+                            token.transferFrom(msg.sender,_members[i],tokenamount.mul(amount).div( 100));
+                        
+                    emit MemberRewarded(_members[i],tokenamount.mul(amount).div( 100));
+                }
             }
         }
         emit HolonRewarded(name, msg.value);
     }
     
-    // splits reward equally across team members
-     function blanketReward()
-        external
-        payable
-    {
-        uint256 memberAmount = msg.value.div(_members.length);
-        for (uint256 i = 0; i < _members.length; i++) {
-            _transfer(_members[i], memberAmount);
-        }
-        emit HolonRewarded(name, msg.value);
-    }
-    
+
     //this function is called by members to send love to others. It builds up the weight for the reward.
     
     function sendLoveTo(address memberaddress, uint8 percentage) public{
@@ -290,6 +306,7 @@ import "../node_modules/openzeppelin-solidity/contracts/token/ERC20/IERC20.sol";
     {
         (bool success, ) = dst.call.value(amount)("");
         require(success, "Transfer failed");
+        
     }
     
     

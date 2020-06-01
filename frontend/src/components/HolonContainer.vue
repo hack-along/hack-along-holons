@@ -38,7 +38,8 @@
           :class="getCircleClass(index)"
           :key="`${member.name}-${index}`"
         >
-          <div class="c-inner profile-card">
+          <div class="c-inner profile-card, inline-block my-4 rounded-full bg-cover bg-blue-900 h-32 w-32"
+            :style="{ 'background-image': 'url(' + member.img + ')'}">
             <div class="px-6 py-4">
               <router-link :to="`/${member.address}`">
                 <h2 class="font-bold text-xl text-white" :title="member.address">{{ member.name }}</h2>
@@ -155,8 +156,9 @@
 </template>
 <script>
 import web3 from "../libs/web3.js";
+import Identicon from "identicon.js";
 import holonabi from "../data/holonabi.json";
-import hackalongabi from "../data/hackalongabi.json";
+import factoryabi from "../data/factoryabi.json";
 export default {
   name: "HolonContainer",
   props: ["holonNav"],
@@ -180,13 +182,13 @@ export default {
       holon: null,
       user: null,
       holonabi: holonabi,
-      hackalongabi: hackalongabi,
+      factoryabi: factoryabi,
       homeHolon: "0x82Aa4dC3E7D85a95cd801394A070AE316b6a668d",
       holonaddress: null,
       castedlove: 0,
       totallove: 0,
       totalrewards: 0,
-      hackalongaddress: "0x11D142091C53A699eE80Aee0ab509F28BE4C3564",
+      factoryaddress: "0xF31e09d6130cd71e286Eb640a1A2930f89b099C7",
       circleClass: [
         "row-3 c-2",
         "row-2 c-3",
@@ -224,8 +226,8 @@ export default {
       });
       this.holon = new web3.eth.Contract(this.holonabi, this.holonaddress);
       this.factory = new web3.eth.Contract(
-        this.hackalongabi,
-        this.hackalongaddress
+        this.factoryabi,
+        this.factoryaddress
       );
       this.makeHolonList();
 
@@ -236,6 +238,7 @@ export default {
         .listHolons()
         .call()
         .then(data => {
+          console.log(data);
           if (data) {
             for (var i = 0; i < data.length; i++) {
               this.holonList[i] = {
@@ -320,7 +323,11 @@ export default {
         .then(response => response.json())
         .then(data => {
           if (data.status === "error") {
-            console.log(data.message);
+            // Create and set identicon as profile picture
+            var image = new Identicon(this.holonMembers[index].address.toString(), 420).toString();
+            this.holonMembers[index].img="data:image/png;base64," + image ;
+            //ALTERNATIVE: Robohash
+           //this.holonMembers[index].img = "https://robohash.org/"+this.holonMembers[index].address+".png?set=set4"
             return;
           }
           this.setImage(index, data.image);
@@ -329,6 +336,7 @@ export default {
     setImage(index, image) {
       this.holonMembers[index].img =
         "https://ipfs.io/ipfs/" + image[0].contentUrl["/"];
+        
     },
     getName(index) {
       this.holon.methods
@@ -338,6 +346,7 @@ export default {
           this.holonMembers[index].name = data;
         });
     },
+    
     getRemainingLove(index) {
       this.holon.methods
         .remaininglove(this.holonMembers[index].address)

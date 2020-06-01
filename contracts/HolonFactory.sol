@@ -6,16 +6,17 @@ import "./Holon.sol";
 
 /* ---------------------------------------------------
  * This contract handles Holon creation, tracking and listing
- * The Holon initiatior is the Holon captain (owner) and he is able to add and remove members 
+ * The Holon initiatior is the Holon lead (owner) and he is able to add and remove members 
  * from within the Holon contract
  * 
  * ----------------------------------------------------
  */
-contract HackAlong is Ownable {
+contract HolonFactory is Ownable {
    
     mapping (string => address) public toAddress;
-    mapping (address => string) public toName;
-    mapping (address => address payable[]) public holons;
+    mapping (address => address[]) public holons;
+
+    mapping (address => bool) public isHolon;
 
     address payable[] internal _holons;
 
@@ -33,15 +34,18 @@ contract HackAlong is Ownable {
     
         nholons += 1;
         Holon newholon = new Holon(msg.sender, name, nholons);
-        toAddress[name] = address(newholon);
-        toName[address(newholon)] = name;
         _holons.push(address(newholon));
+
         holons[msg.sender].push(address(newholon));
+        toAddress[name] = address(newholon);
+        isHolon[address(newholon)] = true;
 
         emit NewHolon(name, nholons);
       
         return toAddress[name];
     }
+
+
 
     function listHolons()
         external
@@ -51,15 +55,16 @@ contract HackAlong is Ownable {
         return _holons;
     }
 
-    function listMyHolons()
+    function listHolonsOf(address member)
         external
         view
-        returns (address payable[] memory)
+        returns (address[] memory)
     {
-        return holons[msg.sender];
+        return holons[member];
     }
 
     function getHolon(uint256 holonid) public view returns (address){
         return _holons[holonid];
     }
+
 }

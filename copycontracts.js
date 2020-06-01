@@ -2,7 +2,7 @@ var fs = require('fs');
 var files = fs.readdirSync('./build/contracts');
 for (var i in files) {
 
-	var f = require(__dirname + '/../build/contracts/' + files[i]);
+	var f = require(__dirname + '/build/contracts/' + files[i]);
 	console.log("processing  " +  f.contractName); 
 	var  obj= f.networks;
         var address = '';
@@ -21,7 +21,7 @@ for (var i in files) {
 
 	console.log(data);
 
-	var outputFileName = __dirname + '/../../src/contracts/' + f.contractName + ".json";
+	var outputFileName = __dirname + 'frontend/src/contracts/' + f.contractName + ".json";
 	console.log('saving to', outputFileName);
 	fs.writeFile(outputFileName, JSON.stringify(data), 'utf8',function(){});
 }

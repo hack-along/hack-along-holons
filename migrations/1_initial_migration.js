@@ -1,9 +1,9 @@
 const Migrations = artifacts.require("Migrations");
-const HackAlong = artifacts.require("HackAlong");
+const HolonFactory = artifacts.require("HolonFactory");
 const TestToken = artifacts.require("TestToken");
 
 module.exports = function(deployer) {
   deployer.deploy(Migrations);
-  deployer.deploy(HackAlong);
-  deployer.deploy(TestToken,100);
+  deployer.deploy(HolonFactory);
+  deployer.deploy(TestToken,100000000);
 };
