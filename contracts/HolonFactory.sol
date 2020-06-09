@@ -1,6 +1,5 @@
 pragma solidity ^0.6;
-import "../node_modules/openzeppelin-solidity/contracts/access/Ownable.sol";
-import "../node_modules/openzeppelin-solidity/contracts/math/SafeMath.sol";
+
 import "./Holon.sol";
 
 
@@ -11,60 +10,60 @@ import "./Holon.sol";
  * 
  * ----------------------------------------------------
  */
-contract HolonFactory is Ownable {
+contract HolonFactory{
    
-    mapping (string => address) public toAddress;
-    mapping (address => address[]) public holons;
 
     mapping (address => bool) public isHolon;
+    mapping (string => address) public toAddress;
+    mapping (address => string) public toName;
+    mapping (address => address[]) public holons;
 
-    address payable[] internal _holons;
+    address[] internal _holons;
 
     uint256 public nholons;
 
-    event NewHolon(string name, uint256 id);
-    
-    constructor () public{
+    event NewHolon(string name, address addr);
+
+    constructor () 
+    public
+    {
         nholons = 0;
     }
 
    function newHolon(string memory name) public returns (address holon)
     {
         if (toAddress[name] > address(0x0)) return toAddress[name];
-    
+
         nholons += 1;
-        Holon newholon = new Holon(msg.sender, name, nholons);
-        _holons.push(address(newholon));
+        Holon newholon = new Holon(name, address(this));
+        newholon.transferOwnership(msg.sender);
+        address addr = address(newholon);
+        _holons.push(addr);
+   
+        holons[msg.sender].push(addr);
+        toAddress[name] = addr;
+        toName[addr] = name;
+        isHolon[addr] = true;
 
-        holons[msg.sender].push(address(newholon));
-        toAddress[name] = address(newholon);
-        isHolon[address(newholon)] = true;
-
-        emit NewHolon(name, nholons);
+        emit NewHolon(name, addr);
       
-        return toAddress[name];
+        return addr;
     }
-
-
 
     function listHolons()
         external
         view
-        returns (address payable[] memory)
+        returns (address[] memory)
     {
         return _holons;
     }
 
-    function listHolonsOf(address member)
-        external
+    function listHolonsOf(address owner)
+        public
         view
         returns (address[] memory)
     {
-        return holons[member];
-    }
-
-    function getHolon(uint256 holonid) public view returns (address){
-        return _holons[holonid];
+        return holons[owner];
     }
 
 }

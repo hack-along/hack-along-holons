@@ -14,7 +14,7 @@ for (var i in files) {
 	}
 	console.log("Address: " + address);
 	var data = {
-		bytecode: f.bytecode,
+		//bytecode: f.bytecode,
 		abi: f.abi,
 		address: address
 	};
@@ -23,6 +23,6 @@ for (var i in files) {
 
 	var outputFileName = __dirname + '/frontend/src/data/' + f.contractName + ".json";
 	console.log('saving to', outputFileName);
-	fs.writeFile(outputFileName, JSON.stringify(data.abi), 'utf8',function(){});
+	fs.writeFile(outputFileName, JSON.stringify(data), 'utf8',function(){});
 }
 

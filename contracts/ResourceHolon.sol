@@ -1,9 +1,8 @@
 pragma solidity ^0.6;
 pragma experimental ABIEncoderV2;
 
-import "./Holon.sol";
 
-contract ResourceHolon is Holon
+contract ResourceHolon
 {
     enum Status {Requested, Claimed, Completed}
 
@@ -50,7 +49,7 @@ contract ResourceHolon is Holon
     event NewRequest(string _label , uint recipeID, uint amount );
     event NewRecipe(string _label);
 
-    constructor (string memory _label, uint _id) Holon (msg.sender,_label,_id)public
+    constructor (string memory _label, uint _id) public
     {
         nrequests = 0;
         nrecipes = 0;
